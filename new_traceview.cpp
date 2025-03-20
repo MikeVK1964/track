@@ -8,13 +8,15 @@
 #include "si_xh.h"
 #include "maketras.h"
 #include "convcoor.h"
-
+//************************************************************
+// Главный winget MainwindowTrace
+//     setCentralWidget(pView);
+//     агрегатирована с классом    DocTras* m_pDocument;
+//**************************************************
 New_traceView::New_traceView(QWidget* parent)
     :QSplitter(Qt::Horizontal,parent)
 {
  QSplitter* pleft;
-/// QWidget* pright;
-//// RightForm* pright1;
  pright1 = new RightForm;
 
  pleft = new QSplitter(Qt::Vertical);
@@ -25,9 +27,6 @@ New_traceView::New_traceView(QWidget* parent)
  psi_xh = new SI_XH;
 
  pleft->addWidget(psi_xh);
-
-/// pright = new QWidget;
-
 
  addWidget(pleft);
 
