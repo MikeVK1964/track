@@ -52,10 +52,10 @@ void SI_XH::mouseMoveEvent(QMouseEvent *event)
  QString str;
 
 
- str.asprintf("H%8.3f",ftmp);
-
+// str.asprintf("H%8.3f",ftmp);
+  str.setNum(ftmp,'g',5);
 /// QMessageBox::critical(NULL,"error",str);
- str=str+QString(tr(" км"));
+ str="H: "+str+QString(tr(" км"));
 
  emit signalH(str);
  event->accept();

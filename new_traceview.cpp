@@ -122,20 +122,23 @@ void New_traceView::FillElList(int i)
  str.setNum(GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].B);
  modelTrPoints->setItem(i,0,new QStandardItem(str));
 
-// str.asprintf("%5.3f",GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].D);
  str.setNum(GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].D);
  modelTrPoints->setItem(i,1,new QStandardItem(str));
  float xx,yy;
 
  DkmBToXY(GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].D,
      GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].B,xx, yy);
- str.asprintf("%5.3f",xx);
+ //str.asprintf("%5.3f",xx);
+ str.setNum(xx);
  modelTrPoints->setItem(i,2,new QStandardItem(str));
 
- str.asprintf("%5.3f",yy);
+ //str.asprintf("%5.3f",yy);
+ str.setNum(yy);
+
  modelTrPoints->setItem(i,3,new QStandardItem(str));
 
- str.asprintf("%d",GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].H);
+// str.asprintf("%d",GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].H);
+ str.setNum(GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].H);
  modelTrPoints->setItem(i,4,new QStandardItem(str));
  kmb_trace::TargetType type_tar
        =GetDocument()->m_Trackes[m_ntr_val-1].type_tar;
@@ -161,11 +164,14 @@ void New_traceView::FillElList(int i)
  break;
 
  }
- if (0<i)
+ if (0<i) // для первой точки скорость и ускорение не важно
  {
-  str.asprintf("%d",GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].V)  ;
+
+//  str.asprintf("%d",GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].V)  ;
+  str.setNum(GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].V);
   modelTrPoints->setItem(i,6,new QStandardItem(str));
-  str.asprintf("%d",GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].A)  ;
+  //str.asprintf("%d",GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].A)  ;
+  str.setNum(GetDocument()->m_Trackes[m_ntr_val-1].m_TrasPoint[i].A);
   modelTrPoints->setItem(i,7,new QStandardItem(str));
 
  }
