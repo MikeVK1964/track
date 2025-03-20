@@ -1,0 +1,10 @@
+.idea/
+
+*.sublime-workspace
+*.sublime-project
+
+.DS_Store
+trace.pro.user
+trace.vcxproj
+
+trace.sln
