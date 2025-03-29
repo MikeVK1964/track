@@ -37,7 +37,15 @@ public:
  int H;   // метры
  unsigned int A; // ускорение на маневре (м/с*с)
  unsigned int V; // скорость
+ friend QDataStream &operator <<(QDataStream &stream, const TrasPoint &A){
+  stream << A.B << A.D << A.H << A.A << A.V;
+  return stream;
+ }
+ friend QDataStream & operator>> (QDataStream& stream, TrasPoint& A){
+     stream >> A.B >> A.D >> A.H >> A.A >> A.V;
+     return stream;
 
+ }
 };
 
 class Tras
@@ -61,27 +69,22 @@ private:
  void CalcV(int i, float &VX, float &VY,float &VZ,float& DT);
 
  friend QDataStream &operator <<(QDataStream &stream, const Tras &A){
-     stream << A.type_tar;
+ //    stream << A.type_tar  ;
+     stream << A.type_tar<< A.NumTR ;//<< A.m_TrasPoint.count();// << start_time;
+     stream << A.m_TrasPoint;
+//     for (qsizetype i=0;i<A.m_TrasPoint.count();i++)
+//       stream << A.m_TrasPoint[i];
      return stream;
  };
 //data_stream >> reinterpret_cast<QSet<qint32>&>(color_set2);
  friend QDataStream & operator>> (QDataStream& stream, Tras& A){
-      stream >> reinterpret_cast<int&>(A.type_tar);
+     qsizetype num_point_of_trace;
+     stream >> reinterpret_cast<int&>(A.type_tar) >> A.NumTR; // >> num_point_of_trace;
+     stream >> A.m_TrasPoint;
 
      return stream;
  }
 };
 
-class DocTras
-{
-public:
- DocTras();
- void AddTras(float B, float D, int H, kmb_trace::TargetType type_tar1);
- QVector<Tras> m_Trackes; // вектор трасс
- int FindTras (int cur_tras,float B, float D
-  , float db,float dd,int& num_point);
- void DeleteAllTras();
-
-};
 
 #endif // MAKETRAS_H

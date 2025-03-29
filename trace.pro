@@ -13,6 +13,7 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
+    doctras.cpp \
     new_traceview.cpp \
     iko.cpp \
     proppointtr.cpp \
@@ -24,6 +25,7 @@ SOURCES += main.cpp\
     maketras.cpp
 
 HEADERS  += \
+    DocTrace.h \
     new_traceview.h \
     iko.h \
     proppointtr.h \

@@ -7,6 +7,7 @@
 #include "iko.h"
 #include "si_xh.h"
 #include "maketras.h"
+#include "DocTrace.h"
 
 #include <QMenu>
 #include <QMessageBox>
@@ -179,10 +180,6 @@ void MainwindowTrace::slotAbout()
 {
     QMessageBox::about(this,tr("Писалка трасс"),tr("Версия 1.0"));
 }
-void MainwindowTrace::slotSaveAs()
-{
-
-}
 void MainwindowTrace::slotChangeScale(QAction* prAc)
 {
  QString str = prAc->text();
@@ -265,6 +262,25 @@ void MainwindowTrace::slotNew()
  pView->CorNTras(0);
  pView->FillList();
 }
+// Слот Сохранить как
+void MainwindowTrace::slotSaveAs()
+{
+    QString str=QFileDialog::getSaveFileName(this,"Выбор файла","","*.trc ");
+    if (str.size()==0)
+        return;
+     setWindowTitle("trace-"+str);
+     setWindowFilePath(str);
+#if 0
+
+     QString fname= windowFilePath();
+
+     New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
+     DocTras* pdoc= pView->GetDocument();
+     pdoc->Save(fname);
+#endif
+     CommonSave();
+}
+
 void MainwindowTrace::slotSave()
 {
  if (windowTitle()==TITLE_NO_NAME)
@@ -276,62 +292,38 @@ void MainwindowTrace::slotSave()
    setWindowFilePath(str);
 
  }
- QString fname;
- fname = windowFilePath();
- QFile f(fname);
- if (f.open(QIODevice::WriteOnly ))
- {
-  char head_f[]="SAL01";
-  f.write(head_f,5); // сохранили заголовок
-  New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
-  DocTras* pdoc= pView->GetDocument();
-  QDataStream stream(&f);
-  stream << pdoc->m_Trackes;
+#if 0
+ QString fname= windowFilePath();
 
-
-  f.flush();
-  f.close();
- }
- else
-   qDebug("error open file\n");
-
- // настройка кодека для корректной обработки русских букв
-//     QTextCodec *codec1 = QTextCodec::codecForName("UTF-8");
-//     QTextCodec::setCodecForLocale(codec1);
-
-
+ New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
+ DocTras* pdoc= pView->GetDocument();
+ pdoc->Save(fname);
+#endif
+ CommonSave();
 }
+//**********************************************************
+//
 void MainwindowTrace::OnOpen()
 {
  QString str=QFileDialog::getOpenFileName(this,"Открыть файл","","*.trc");//После закрытия диалогового окна мы проверяем
- //строку str на содержимое, и если оно есть, то
- if (!str.isEmpty())
- {
-  QFile file;
-  QDataStream stream;
-  file.setFileName(str);
-  if (!file.open(QIODevice::ReadOnly))
-  {
-    QMessageBox::warning(this,tr("Ошибка открытия  "),
-                         tr("файл %1\n%2 ").arg(file.fileName()).arg(file.errorString()));
-   return ;
-  }
+ if (str.isEmpty())  return;
+ setWindowTitle("Имя файла - "+str);
 
-  stream.setDevice((QIODevice *)&file);
-  char head_f[5];
-  if (stream.readRawData((char*)&head_f,5)==-1)
-  {
-     QMessageBox::about(this,tr(""),tr("Слишком мало байт в файле"));
-     file.close();
-     return ;
-  }
-  if (strncasecmp("SAL01",head_f,5)!=0 )
-  {
-      QMessageBox::warning(this,tr("Ошибка  "),tr("Неправильный заголовок файла  "));
-      file.close();
+ New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
+ DocTras* pdoc= pView->GetDocument();
+ pdoc->Load(str);
+ pView->CorNTras(0);
 
-      return;
-  }
- }
+}
+void MainwindowTrace::CommonSave()
+{
+//    setWindowTitle("trace-"+str);
+//    setWindowFilePath(str);
+
+    QString fname= windowFilePath();
+
+    New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
+    DocTras* pdoc= pView->GetDocument();
+    pdoc->Save(fname);
 
 }

@@ -8,6 +8,8 @@
 #include "si_xh.h"
 #include "maketras.h"
 #include "convcoor.h"
+#include "DocTrace.h"
+
 //************************************************************
 // Главный winget MainwindowTrace
 //     setCentralWidget(pView);

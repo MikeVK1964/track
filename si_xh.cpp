@@ -7,6 +7,7 @@
 #include "mainwindowTrace.h"
 #include "new_traceview.h"
 #include "maketras.h"
+#include "DocTrace.h"
 
 extern SetControl scon; // управляющие параметры
 extern MainwindowTrace* pMW;

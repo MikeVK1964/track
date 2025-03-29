@@ -13,6 +13,7 @@
 #include "convcoor.h"
 #include "si_xh.h"
 #include "proppointtr.h"
+#include "DocTrace.h"
 ////#include "rightform.h"
 
 extern MainwindowTrace* pMW;

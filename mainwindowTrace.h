@@ -25,6 +25,7 @@ private slots:
 private:
     QAction* pActScale[5];
     QAction* pActHeight[3];
+    void CommonSave();
 
 };
 
