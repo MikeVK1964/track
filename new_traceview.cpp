@@ -9,6 +9,7 @@
 #include "maketras.h"
 #include "convcoor.h"
 #include "DocTrace.h"
+#include "setcontrol.h"
 
 //************************************************************
 // Главный winget MainwindowTrace

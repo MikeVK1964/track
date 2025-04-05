@@ -13,6 +13,7 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
+    dlgimit.cpp \
     doctras.cpp \
     new_traceview.cpp \
     iko.cpp \
@@ -26,6 +27,7 @@ SOURCES += main.cpp\
 
 HEADERS  += \
     DocTrace.h \
+    dlgimit.h \
     new_traceview.h \
     iko.h \
     proppointtr.h \
@@ -37,6 +39,7 @@ HEADERS  += \
     maketras.h
 
 FORMS += \
+    dlgimit.ui \
     proppointtr.ui \
     rightform.ui
 

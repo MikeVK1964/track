@@ -3,6 +3,7 @@
 
 #include <QtGui>
 #include <QMainWindow>
+#include <time.h>
 //#include "QMainWindowTrace"
 #define TITLE_NO_NAME "trace-Без названия"
 
@@ -22,10 +23,15 @@ private slots:
  void slotNew();
  void slotSave();
  void OnOpen();
+ void OnImit();
+ void OnTime();
+
 private:
     QAction* pActScale[5];
     QAction* pActHeight[3];
     void CommonSave();
+    QTimer *tmr; //Адресная переменная таймера
+
 
 };
 

@@ -2,6 +2,8 @@
 #define NEW_TRACEVIEW_H
 #include <qsplitter.h>
 #include <QStandardItem>
+#include <QTimer>
+#include <QTime>
 
 class RightForm;
 class IKO;
@@ -31,12 +33,15 @@ public:
     unsigned int GetDefV();
 
     RightForm* pright1;
-
+    unsigned int beg_tick; //
+    //ulong  beg_tick;  //clock_t  beg_tick;  // время начала имитации в mc
+                        // CLOCKS_PER_SEC -- говорит, сколько тиков в секунде, обычно, 1000 --т.е. мс
+    double trace_time; // время движения с начала имитации в секундах
+    // не нужна т.к. можно вычислить локально
 private:
    int		m_ntr_val;  // номер трассы, выбранной в комбо
    DocTras* m_pDocument;
    QStandardItemModel* modelTrPoints; // модель точек трассы
-
 };
 
 #endif // NEW_TRACEVIEW_H

@@ -8,6 +8,7 @@
 #include "si_xh.h"
 #include "maketras.h"
 #include "DocTrace.h"
+#include "dlgimit.h"
 
 #include <QMenu>
 #include <QMessageBox>
@@ -139,6 +140,22 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
       pActHeight[2]->setIconVisibleInMenu(false);
       connect(pmnuSubMenuHeight,SIGNAL(triggered(QAction*)),SLOT(slotChangeH(QAction*)));
 
+//      QMenu* pmnuSubMenuImit = new QMenu(tr("Имитация"),pmnuMode);
+//     pmnuMode->addMenu(pmnuSubMenuImit);
+
+
+     QAction* pactOnImit = new QAction("Start Imit", 0);
+      pactOnImit->setText("&Имитация..."); // изменяет Open file
+      pactOnImit->setShortcut(QKeySequence("CTRL+I"));
+      pactOnImit->setToolTip("Запустить имитацию");
+      pactOnImit->setStatusTip("Запустить имитацию");
+      pactOnImit->setWhatsThis("Запустить имитацию");
+////      pactOpen->setIcon(QPixmap(fileopen));
+
+      connect(pactOnImit, SIGNAL(triggered()), this, SLOT(OnImit()));
+     pmnuMode->addAction(pactOnImit);
+
+
 
     QMenu* pmnuHelp = new QMenu(tr("&Помощь"));
 
@@ -169,6 +186,11 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
  ////   statusBar()->addWidget(new QLabel(this));
     setCentralWidget(pView);
     setWindowTitle(TITLE_NO_NAME);
+
+    tmr = new QTimer();
+
+    connect(tmr, SIGNAL(timeout()),this, SLOT(OnTime()));
+    tmr->start(500);  // таймер срабатывает 2 раза в секунду
 
 }
 
@@ -325,5 +347,64 @@ void MainwindowTrace::CommonSave()
     New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
     DocTras* pdoc= pView->GetDocument();
     pdoc->Save(fname);
+
+}
+// Вызов диалога запуска имитации
+void MainwindowTrace::OnImit()
+{
+  extern SetControl scon; // управляющие параметры
+
+  DlgImit plg(this);
+  if ( plg.exec()==QDialog::Accepted)
+  {
+      New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
+      DocTras* pdoc= pView->GetDocument();
+
+      if (pdoc->m_Trackes.size()==0)
+      {
+          //MessageBox("Идиот! Введи трассы .","Нечему летать",MB_OK);
+          QMessageBox::information(nullptr,"Идиот! Введи трассы .","Нечему летать");
+          scon.status=0;  // нет полетов
+          return;  // нет трасс
+      }
+      scon.status=1; // запуск полетов
+      pView->beg_tick = GetTickCount();  //GetTickCount64();
+      pView->trace_time=0;  // время движения при имитации
+
+      return;
+  }
+  scon.status=0;  // нет полетов
+
+ // delete plg ;
+
+}
+// Продвижение и отображение трасс
+void MainwindowTrace::OnTime()
+{
+    extern SetControl scon; // управляющие параметры
+    if (scon.status!=1)
+          return;
+
+    New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
+///    DocTras* pdoc= pView->GetDocument();
+
+   // pView->trace_time = pView->trace_time+ ((GetTickCount64()-(double)pView->beg_tick)*(scon.v_imi+1))/CLOCKS_PER_SEC;  //1000;
+   // pView->beg_tick =  GetTickCount64();
+     pView->trace_time = pView->trace_time+ ((GetTickCount()-(double)pView->beg_tick)*(scon.v_imi+1))/CLOCKS_PER_SEC;  //1000;
+     pView->beg_tick =  GetTickCount();
+
+    pView->pIKO->update();
+    pView->psi_xh->update();
+//    int size = pdoc->m_Trackes.size();
+//    for (int i=0;i<size;i++)
+//    {
+
+//    }
+    // вызов функции рисования трасс в
+//    pView->pIKO->update();
+//    pView->psi_xh->update();
+//    pView->pIKO->;
+//            SI_XH*  psi_xh;
+
 
 }

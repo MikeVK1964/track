@@ -76,7 +76,8 @@ void IKO::paintEvent(QPaintEvent*)
    sz_pix.setWidth(width());
    // рисование трассы на ИКО
    tr.Draw(painter,sz_pix,scon.dist);
-
+   if (scon.status==1)  // включен режим имитации
+     tr.ShowTrPos(painter,sz_pix,scon.dist,pView->trace_time);
   }
   if (DragMode)
   {

@@ -58,6 +58,9 @@ public:
       kmb_trace::TargetType type_tar1=kmb_trace::Unknown);
  void Draw(QPainter& painter,QSize sz_pix,float dist);
  void DrawH(QPainter& painter,QSize sz_pix);
+ void ShowTrPos(QPainter& painter,QSize sz_pix,float dist,double time_c);
+// void ShowTrPos(int max_y,float fmax_ykm,double tick_c,MGraph* p,MGraph* ppic
+//     ,int max_y_xh,int max_h,MGraph* p_xh,MGraph* ppic_xh);
 
  QVector<TrasPoint> m_TrasPoint; // массив точек трасс
  kmb_trace::TargetType type_tar;
@@ -78,12 +81,16 @@ private:
  };
 //data_stream >> reinterpret_cast<QSet<qint32>&>(color_set2);
  friend QDataStream & operator>> (QDataStream& stream, Tras& A){
-     qsizetype num_point_of_trace;
+ //    qsizetype num_point_of_trace;
      stream >> reinterpret_cast<int&>(A.type_tar) >> A.NumTR; // >> num_point_of_trace;
      stream >> A.m_TrasPoint;
 
      return stream;
  }
+private:
+ inline bool GetCoor( double tick_c,float& fx,float& fy,int& iz,
+     float fvx1,float fvy1,float fvz1, float fax1,float fay1,float faz1 );
+ double start_time=0.0;
 };
 
 
