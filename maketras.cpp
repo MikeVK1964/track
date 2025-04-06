@@ -351,13 +351,10 @@ void Tras::ShowTrPos(QPainter& painter,QSize sz_pix,float dist,double time_c)
     float fvy1 = 0, fvz1 = 0, fax1 = 0, fay1 = 0, faz1 = 0;
     if (GetCoor(time_c,fx1,fy1,iz1,fvx1,fvy1,fvz1,fax1,fay1,faz1))
     {
-//        x = fx1*max_y/(fmax_ykm*2)+(float)max_y/2;
-        x = fx1*sz_pix.height()/(dist*2)+(float)sz_pix.height()/2;
 
-//        y = - fy1*max_y/(fmax_ykm*2) + (float)max_y/2;
-        y = - fy1*sz_pix.width()/(dist*2) + (float)sz_pix.width()/2;
+        x = fx1*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
+        y = - fy1*sz_pix.height()/(dist*2) + (float)sz_pix.height()/2;
 
-//        p->ShowRect(x-3,y-3,9,9);
         painter.drawRect(x-3,y-3,6,6);
     }
 }
