@@ -75,6 +75,9 @@ void IKO::paintEvent(QPaintEvent*)
    sz_pix.setHeight(height());
    sz_pix.setWidth(width());
    // рисование трассы на ИКО
+   qDebug() << "paintEvent  before B= " << it->m_TrasPoint[0].B
+            << "D= "<< it->m_TrasPoint[0].D;
+
    tr.Draw(painter,sz_pix,scon.dist);
    if (scon.status==1)  // включен режим имитации
      tr.ShowTrPos(painter,sz_pix,scon.dist,pView->trace_time);
@@ -109,12 +112,15 @@ void IKO::mousePressEvent(QMouseEvent *event)
   New_traceView* pView = dynamic_cast<New_traceView*> (pMW->centralWidget());
 
   float dkm,b;
+
+  qDebug() << "mousePressEvent before  " << event->pos()  ;
+
   GetDB(event->pos(),dkm,b);
 
   int cur_sel = pView->GetCurSel();
   if (cur_sel==0) // Новая трасса
   {
-//   qDebug() << "mousePressEvent новая трасса " << dkm;
+    qDebug() << "mousePressEvent new track " << event->pos()  << "km " <<  dkm << "b = " << b;
 
    pView->AddTras(b,dkm);
    this->update();
@@ -234,7 +240,7 @@ void IKO::GetDB(QPoint mp, float &distance_km, float &b)
   QPoint center;
   center.setX((width()-0.5)/2.0);
   center.setY(height()/2.0);
-  float sq;
+//  float sq;
 
 #if 0
   sq= (center.x()-mp.x())*(center.x()-mp.x())+(center.y()-mp.y())*(center.y()-mp.y());
@@ -261,7 +267,13 @@ void IKO::GetDB(QPoint mp, float &distance_km, float &b)
    b=-1;distance_km=0;
   }
   else
-   GetBG( x,y,b,sq); // получить пеленг в град и даль хY
+  {
+      double x_km=x*scon.dist/width();
+      double y_km=y*scon.dist/height();
+      double b_grad,sq;
+      GetBG( x_km,y_km,b_grad,sq); // получить пеленг в град и даль хY
+      b=(float)b_grad;
+  }
 }
 void IKO::slotShowContextMenu(const QPoint& pos)
 {

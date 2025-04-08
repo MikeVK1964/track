@@ -54,7 +54,7 @@ int Tras::AddTP(float B,float D,unsigned int H1,
 void Tras::DrawH(QPainter& painter,QSize sz_pix)
 {
  extern SetControl scon; // управляющие параметры
- float fx,fy;
+ double fx,fy;
  int x,y;
  int size = m_TrasPoint.size();
  if (size==0)  // Если нет точек выходим
@@ -137,23 +137,30 @@ void Tras::Draw(QPainter& painter,QSize sz_pix,float dist)
 {
 //// SetControl scon; // управляющие параметры
 
- float fx,fy;
+ double fx,fy;
  int x,y;
 
  int size = m_TrasPoint.size();
  if (size==0)  // Если нет точек выходим
         return;
+ qDebug() << "Draw ----------------B = " << m_TrasPoint[0].B << "D = "
+          << m_TrasPoint[0].D;
+
  BDToXY(m_TrasPoint[0].B,m_TrasPoint[0].D,
         fx,fy);
  x = fx*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
  y =  -fy*sz_pix.height()/(dist*2) + (float)sz_pix.height()/2;
-    // Вывод начала трассы
+
+ qDebug() << "ERROR  is here !!! BDToXY after x=  " << x << "y = "
+          << y;
+
+ // Вывод начала трассы
  painter.drawRect(x,y,3,3);
  // Вывод линий
  for (int i=1;i<size;i++)
  {
 
-  float fx2,fy2,fx1,fy1;
+  double fx2,fy2,fx1,fy1;
   BDToXY(m_TrasPoint[i-1].B,m_TrasPoint[i-1].D,
      fx1,fy1);
   BDToXY(m_TrasPoint[i].B,m_TrasPoint[i].D,
@@ -211,7 +218,7 @@ void Tras::Draw(QPainter& painter,QSize sz_pix,float dist)
  }
 }
 
-void Tras::BDToXY(float B, float D, float &x, float &y)
+void Tras::BDToXY(double B, double D, double &x, double &y)
 {
     if (B==-1)
     {
@@ -231,7 +238,7 @@ void Tras::BDToXY(float B, float D, float &x, float &y)
 int Tras::CheckTras()
 {
  ////double DX,DY,DZ;
- float tx,ty,tx1,ty1;
+ double tx,ty,tx1,ty1;
  float DT,VX,VY,VZ;
  ////double VX0=0,VY0=0,VZ0=0;
  ////double TP=0;  // время прибытия в ОТ
@@ -320,7 +327,7 @@ int Tras::CheckTras()
 }
 void Tras::CalcV(int i, float &VX, float &VY,float &VZ,float& DT)
 {
-    float tx,ty,tx1,ty1;
+    double tx,ty,tx1,ty1;
 
     BDToXY(m_TrasPoint[i].B,m_TrasPoint[i].D*1000,
          tx,ty);
@@ -366,7 +373,7 @@ float fvx1,float fvy1,float fvz1, float fax1,float fay1,float faz1 )
 {
   int size = m_RealTT.size();
   int i,iz;
-  float fx,fy;
+  double fx,fy;
   BDToXY(m_TrasPoint[0].B,m_TrasPoint[0].D,
         fx,fy);
   iz = m_TrasPoint[0].H ; // метры

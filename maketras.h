@@ -67,7 +67,9 @@ public:
  int NumTR; // номер точки рубежа
  int CheckTras();
 private:
- void BDToXY(float B, float D, float &x, float &y);
+ //void BDToXY(float B, float D, float &x, float &y);
+ void BDToXY(double B, double D, double &x, double &y);
+
  QVector<RealTT> m_RealTT; // вектор действительных точек трассы
  void CalcV(int i, float &VX, float &VY,float &VZ,float& DT);
 

@@ -8,8 +8,11 @@
 ////#define M_PI 3.1415926535
 
 // получить пеленг в град и даль хY
+// x,y  ---км
+// pg --- град.
+// sq
 template <class T>
-inline void GetBG(T x,T y,float& pg,float& sq)
+inline void GetBG(T x,T y,T& pg,T& sq)
 {
  sq=sqrt(x*x+y*y);
  if (sq==0)
