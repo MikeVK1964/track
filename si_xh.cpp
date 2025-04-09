@@ -37,6 +37,11 @@ void SI_XH::paintEvent(QPaintEvent* /*paint*/)
     sz_pix.setWidth(width());
 
     it->DrawH(painter,sz_pix) ;
+    if (scon.status==1)  // включен режим имитации
+      it->ShowTrPosSI(painter,sz_pix,scon.dist,scon.h,pView->trace_time);
+
+        //      tr.ShowTrPos(painter,sz_pix,scon.dist,pView->trace_time);
+
    }
 //
   painter.end();

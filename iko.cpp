@@ -75,8 +75,6 @@ void IKO::paintEvent(QPaintEvent*)
    sz_pix.setHeight(height());
    sz_pix.setWidth(width());
    // рисование трассы на ИКО
-   qDebug() << "paintEvent  before B= " << it->m_TrasPoint[0].B
-            << "D= "<< it->m_TrasPoint[0].D;
 
    tr.Draw(painter,sz_pix,scon.dist);
    if (scon.status==1)  // включен режим имитации
@@ -113,14 +111,12 @@ void IKO::mousePressEvent(QMouseEvent *event)
 
   float dkm,b;
 
-  qDebug() << "mousePressEvent before  " << event->pos()  ;
 
   GetDB(event->pos(),dkm,b);
 
   int cur_sel = pView->GetCurSel();
   if (cur_sel==0) // Новая трасса
   {
-    qDebug() << "mousePressEvent new track " << event->pos()  << "km " <<  dkm << "b = " << b;
 
    pView->AddTras(b,dkm);
    this->update();
@@ -168,7 +164,6 @@ void IKO::mouseReleaseEvent(QMouseEvent *event)
     if (100<rc)
     {
      QString str;
-    //// str.asprintf("Ошибочный участок %d",rc);
      str.number(rc);
      str=tr("Ошибочный участок ")+str;
      QMessageBox::warning(NULL,QObject::tr("Ошибка"),str);
@@ -206,7 +201,6 @@ void IKO::mouseMoveEvent(QMouseEvent *event)
     str=str_b.arg(QString::number(distance_km,'g',5));
 
     str=str+QString(QObject::tr(" км"));
- //   qDebug() << "mouseMoveEvent signalDistance(str) " << distance_km;
     emit signalDistance(str);
 
     str_b="B: %1";
@@ -240,23 +234,15 @@ void IKO::GetDB(QPoint mp, float &distance_km, float &b)
   QPoint center;
   center.setX((width()-0.5)/2.0);
   center.setY(height()/2.0);
-//  float sq;
 
-#if 0
-  sq= (center.x()-mp.x())*(center.x()-mp.x())+(center.y()-mp.y())*(center.y()-mp.y());
-  sq=sqrt(sq);
-
-  distance_km = sq*scon.dist/center.x();
-#else
   double ksq1=4*scon.dist*scon.dist;
   double sq1=ksq1*(center.x()-mp.x())*(center.x()-mp.x());
   sq1=sq1/(width()*width());
-//          /(height()*height());
+
   double sq2=ksq1*(center.y()-mp.y())*(center.y()-mp.y())
           /(height()*height());
   double sq3=sq1+sq2;
   distance_km =sqrt(sq3);
-#endif
 
   int x,y;
   x=mp.x()-center.x();
@@ -374,10 +360,6 @@ void IKO::ResizeEvent(QResizeEvent* e)
 {
  int w = e->size().width();
  int h = e->size().height();
- /////////if(w>h) w=h;
-///     setFixedWidth(h);
-///////// else h=w;
- ////    setFixedHeight(w);
  resize(w,h);
 }
 int IKO::heightForWidth(int w)

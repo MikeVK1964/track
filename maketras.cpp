@@ -143,16 +143,16 @@ void Tras::Draw(QPainter& painter,QSize sz_pix,float dist)
  int size = m_TrasPoint.size();
  if (size==0)  // Если нет точек выходим
         return;
- qDebug() << "Draw ----------------B = " << m_TrasPoint[0].B << "D = "
-          << m_TrasPoint[0].D;
+ //qDebug() << "Draw ----------------B = " << m_TrasPoint[0].B << "D = "
+ //         << m_TrasPoint[0].D;
 
  BDToXY(m_TrasPoint[0].B,m_TrasPoint[0].D,
         fx,fy);
  x = fx*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
  y =  -fy*sz_pix.height()/(dist*2) + (float)sz_pix.height()/2;
 
- qDebug() << "ERROR  is here !!! BDToXY after x=  " << x << "y = "
-          << y;
+ //qDebug() << "ERROR  is here !!! BDToXY after x=  " << x << "y = "
+ //         << y;
 
  // Вывод начала трассы
  painter.drawRect(x,y,3,3);
@@ -363,6 +363,26 @@ void Tras::ShowTrPos(QPainter& painter,QSize sz_pix,float dist,double time_c)
         y = - fy1*sz_pix.height()/(dist*2) + (float)sz_pix.height()/2;
 
         painter.drawRect(x-3,y-3,6,6);
+    }
+}
+//************************************************************
+// Показать положение целей в индикаторе XH
+void Tras::ShowTrPosSI(QPainter& painter,QSize sz_pix,float dist,int max_h_km,double time_c)
+{
+    int size = m_TrasPoint.size();
+    if (size==0)  // Если нет точек выходим
+        return;
+    int x,y;
+    float fx1,fy1;
+    int iz1;
+    float fvx1 = 0;
+    float fvy1 = 0, fvz1 = 0, fax1 = 0, fay1 = 0, faz1 = 0;
+    if (GetCoor(time_c,fx1,fy1,iz1,fvx1,fvy1,fvz1,fax1,fay1,faz1))
+    {
+        x = fx1*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
+        y = - iz1*sz_pix.height()/(max_h_km*1000) + (float)sz_pix.height();
+        painter.drawRect(x-3,y-3,6,6);
+
     }
 }
 //*************************************************************

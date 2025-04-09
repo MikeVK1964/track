@@ -61,6 +61,7 @@ public:
  void ShowTrPos(QPainter& painter,QSize sz_pix,float dist,double time_c);
 // void ShowTrPos(int max_y,float fmax_ykm,double tick_c,MGraph* p,MGraph* ppic
 //     ,int max_y_xh,int max_h,MGraph* p_xh,MGraph* ppic_xh);
+ void ShowTrPosSI(QPainter& painter,QSize sz_pix,float dist,int max_h_km,double time_c);
 
  QVector<TrasPoint> m_TrasPoint; // массив точек трасс
  kmb_trace::TargetType type_tar;
