@@ -287,19 +287,24 @@ void MainwindowTrace::slotNew()
 // Слот Сохранить как
 void MainwindowTrace::slotSaveAs()
 {
+    New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
+    DocTras* pdoc= pView->GetDocument();
+
+    if (pdoc->m_Trackes.size()==0)
+    {
+     QMessageBox msg;
+    msg.setWindowTitle(tr("Замечание"));
+     msg.setText(tr("Нет трасс"));
+     msg.setStandardButtons(QMessageBox::Cancel);
+     msg.exec();
+     return;
+    }
+
     QString str=QFileDialog::getSaveFileName(this,"Выбор файла","","*.trc ");
     if (str.size()==0)
         return;
      setWindowTitle("trace-"+str);
      setWindowFilePath(str);
-#if 0
-
-     QString fname= windowFilePath();
-
-     New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
-     DocTras* pdoc= pView->GetDocument();
-     pdoc->Save(fname);
-#endif
      CommonSave();
 }
 
@@ -346,6 +351,7 @@ void MainwindowTrace::CommonSave()
 
     New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
     DocTras* pdoc= pView->GetDocument();
+    //QMessageBox msg;
     pdoc->Save(fname);
 
 }
@@ -392,19 +398,9 @@ void MainwindowTrace::OnTime()
    // pView->beg_tick =  GetTickCount64();
      pView->trace_time = pView->trace_time+ ((GetTickCount()-(double)pView->beg_tick)*(scon.v_imi+1))/CLOCKS_PER_SEC;  //1000;
      pView->beg_tick =  GetTickCount();
+     // вызов функции рисования трасс в
 
     pView->pIKO->update();
     pView->psi_xh->update();
-//    int size = pdoc->m_Trackes.size();
-//    for (int i=0;i<size;i++)
-//    {
-
-//    }
-    // вызов функции рисования трасс в
-//    pView->pIKO->update();
-//    pView->psi_xh->update();
-//    pView->pIKO->;
-//            SI_XH*  psi_xh;
-
 
 }
