@@ -13,6 +13,8 @@ public:
  void DeleteAllTras();
  void Save(QString fname);
  void Load(QString fname);
+ void SetStartTime();
+
 /// int GetNumTras(double t);
 };
 

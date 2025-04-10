@@ -170,3 +170,27 @@ void DocTras::Load(QString fname)
 
 
 }
+
+void DocTras::SetStartTime()
+{
+    int i,j;
+    double t_max=0;
+    for (i=0;i< m_Trackes.size() ;i++)
+    {
+     m_Trackes[i].start_time = 0;
+     if (m_Trackes[i].m_TrasPoint.size()==1)
+         continue;
+     for (j=1;j<= m_Trackes[i].NumTR ; j++)
+     {
+        float DT;
+        float VX0,VY0,VZ0;
+        m_Trackes[i].CalcV(j,VX0,VY0,VZ0,DT);
+
+       m_Trackes[i].start_time -= DT;
+     }
+     if (m_Trackes[i].start_time<t_max) t_max=m_Trackes[i].start_time;
+    }
+    for (i=0;i<m_Trackes.size();i++)
+     m_Trackes[i].start_time -= t_max;
+
+}

@@ -370,7 +370,7 @@ void MainwindowTrace::OnImit()
       scon.status=1; // запуск полетов
       pView->beg_tick = GetTickCount();  //GetTickCount64();
       pView->trace_time=0;  // время движения при имитации
-
+      pdoc->SetStartTime();
       return;
   }
   scon.status=0;  // нет полетов

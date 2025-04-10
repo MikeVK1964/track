@@ -271,8 +271,11 @@ void IKO::slotShowContextMenu(const QPoint& pos)
  int num_point1=1;  // поиск любой точки
  int rc=pDoc->FindTras(cur_sel-1,b,
              xkm,2,5,num_point1);
+
  if (rc!=-1)  // Трасса найдена
  {
+
+  pView->SetCurSel(rc+1);  // установка комбобокс  0 -- новая
   num_point=num_point1;
   QMenu Ikomnu;
   Ikomnu.addAction("Удалить трассу",this,SLOT(OnDelTr()));
@@ -285,15 +288,24 @@ void IKO::slotShowContextMenu(const QPoint& pos)
  }
 
 }
+//************************************************************************
+// слот удаления трассы
 void IKO::OnDelTr()
 {
  New_traceView* pView = dynamic_cast<New_traceView*> (pMW->centralWidget());
  int cur_sel = pView->GetCurSel();
  DocTras* pDoc = pView ->GetDocument();
 //// pDoc->m_Trackes.remove(cur_sel-1);
- pDoc->m_Trackes.erase(
+
+if (cur_sel<1)
+{
+    QMessageBox::information(this,"Ошибка","трасса не выбрана");
+    return;
+}
+pDoc->m_Trackes.erase(
      pDoc->m_Trackes.begin()+cur_sel-1);
 
+ pView->CorNTras(0);
  this->update();
  pView->psi_xh->update();
 }

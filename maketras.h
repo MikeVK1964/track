@@ -67,12 +67,14 @@ public:
  kmb_trace::TargetType type_tar;
  int NumTR; // номер точки рубежа
  int CheckTras();
+ double start_time=0.0;  //  begining time since imitation
+ void CalcV(int i, float &VX, float &VY,float &VZ,float& DT);
+
 private:
  //void BDToXY(float B, float D, float &x, float &y);
  void BDToXY(double B, double D, double &x, double &y);
 
  QVector<RealTT> m_RealTT; // вектор действительных точек трассы
- void CalcV(int i, float &VX, float &VY,float &VZ,float& DT);
 
  friend QDataStream &operator <<(QDataStream &stream, const Tras &A){
  //    stream << A.type_tar  ;
@@ -90,10 +92,9 @@ private:
 
      return stream;
  }
-private:
+
  inline bool GetCoor( double tick_c,float& fx,float& fy,int& iz,
      float fvx1,float fvy1,float fvz1, float fax1,float fay1,float faz1 );
- double start_time=0.0;
 };
 
 
