@@ -9,6 +9,7 @@
 #include "maketras.h"
 #include "DocTrace.h"
 #include "dlgimit.h"
+#include "mkapp.h"
 
 #include <QMenu>
 #include <QMessageBox>
@@ -18,7 +19,7 @@
 #include <QFileDialog>
 ////#include <QTextCodec>
 
-extern SetControl scon; // управляющие параметры
+//extern SetControl scon; // управляющие параметры
 
 MainwindowTrace::MainwindowTrace(QWidget *parent)
     : QMainWindow(parent)
@@ -205,7 +206,9 @@ void MainwindowTrace::slotAbout()
 void MainwindowTrace::slotChangeScale(QAction* prAc)
 {
  QString str = prAc->text();
- if (scon.dist==str.toInt())
+ MKApp* pMKApp=(MKApp*)qApp;
+
+ if (pMKApp->scon.dist==str.toInt())
      return;
  for (int i=0;i<5;i++)
     pActScale[i]->setChecked(false);
@@ -213,26 +216,26 @@ void MainwindowTrace::slotChangeScale(QAction* prAc)
  switch(str.toInt()) {
   case 500:
      pActScale[0]->setChecked(true);
-     scon.dist=str.toInt();
+     pMKApp->scon.dist=str.toInt();
   break;
   case 300:
      pActScale[1]->setChecked(true);
-     scon.dist=str.toInt();
+     pMKApp->scon.dist=str.toInt();
 
   break;
   case 150:
      pActScale[2]->setChecked(true);
-     scon.dist=str.toInt();
+     pMKApp->scon.dist=str.toInt();
 
   break;
   case 75:
      pActScale[3]->setChecked(true);
-     scon.dist=str.toInt();
+     pMKApp->scon.dist=str.toInt();
 
   break;
   case 32:
      pActScale[4]->setChecked(true);
-     scon.dist=str.toInt();
+     pMKApp->scon.dist=str.toInt();
 
   break;
 
@@ -243,6 +246,7 @@ void MainwindowTrace::slotChangeScale(QAction* prAc)
 }
 void MainwindowTrace::slotChangeH(QAction* pHAc)
 {
+ MKApp* pMKApp=(MKApp*)qApp;
  QString str = pHAc->text();
  str=str.mid(0,2);
 
@@ -252,18 +256,18 @@ void MainwindowTrace::slotChangeH(QAction* pHAc)
  switch(str.toInt()) {
   case 40:
      pActHeight[0]->setChecked(true);
-     scon.h=40;
+     pMKApp->scon.h=40;
 
   break;
   case 20:
      pActHeight[1]->setChecked(true);
 //     scon.h=str.toInt();
-      scon.h=str.toInt();
+      pMKApp->scon.h=str.toInt();
 
   break;
   case 10:
      pActHeight[2]->setChecked(true);
-     scon.h=str.toInt();
+     pMKApp->scon.h=str.toInt();
 
   break;
 
@@ -358,7 +362,8 @@ void MainwindowTrace::CommonSave()
 // Вызов диалога запуска имитации
 void MainwindowTrace::OnImit()
 {
-  extern SetControl scon; // управляющие параметры
+ // extern SetControl scon; // управляющие параметры
+  MKApp* pMKApp=(MKApp*)qApp;
 
   DlgImit plg(this);
   if ( plg.exec()==QDialog::Accepted)
@@ -370,16 +375,16 @@ void MainwindowTrace::OnImit()
       {
           //MessageBox("Идиот! Введи трассы .","Нечему летать",MB_OK);
           QMessageBox::information(nullptr,"Идиот! Введи трассы .","Нечему летать");
-          scon.status=0;  // нет полетов
+          pMKApp->scon.status=0;  // нет полетов
           return;  // нет трасс
       }
-      scon.status=1; // запуск полетов
+      pMKApp->scon.status=1; // запуск полетов
       pView->beg_tick = GetTickCount();  //GetTickCount64();
       pView->trace_time=0;  // время движения при имитации
       pdoc->SetStartTime();
       return;
   }
-  scon.status=0;  // нет полетов
+  pMKApp->scon.status=0;  // нет полетов
 
  // delete plg ;
 
@@ -387,16 +392,15 @@ void MainwindowTrace::OnImit()
 // Продвижение и отображение трасс
 void MainwindowTrace::OnTime()
 {
-    extern SetControl scon; // управляющие параметры
-    if (scon.status!=1)
+    MKApp* pMKApp=(MKApp*)qApp;
+
+    if (pMKApp->scon.status!=1)
           return;
 
     New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
 ///    DocTras* pdoc= pView->GetDocument();
 
-   // pView->trace_time = pView->trace_time+ ((GetTickCount64()-(double)pView->beg_tick)*(scon.v_imi+1))/CLOCKS_PER_SEC;  //1000;
-   // pView->beg_tick =  GetTickCount64();
-     pView->trace_time = pView->trace_time+ ((GetTickCount()-(double)pView->beg_tick)*(scon.v_imi+1))/CLOCKS_PER_SEC;  //1000;
+     pView->trace_time = pView->trace_time+ ((GetTickCount()-(double)pView->beg_tick)*(pMKApp->scon.v_imi+1))/CLOCKS_PER_SEC;  //1000;
      pView->beg_tick =  GetTickCount();
      // вызов функции рисования трасс в
 

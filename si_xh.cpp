@@ -8,8 +8,9 @@
 #include "new_traceview.h"
 #include "maketras.h"
 #include "DocTrace.h"
+#include "mkapp.h"
 
-extern SetControl scon; // управляющие параметры
+//extern SetControl scon; // управляющие параметры
 extern MainwindowTrace* pMW;
 
 
@@ -22,6 +23,7 @@ SI_XH::SI_XH(QWidget *parent) :
 
 void SI_XH::paintEvent(QPaintEvent* /*paint*/)
 {
+ MKApp* pMKApp=(MKApp*)qApp;
  QPainter painter;
  if (pMW!=0) {
   New_traceView* pView = dynamic_cast<New_traceView*> (pMW->centralWidget());
@@ -37,10 +39,9 @@ void SI_XH::paintEvent(QPaintEvent* /*paint*/)
     sz_pix.setWidth(width());
 
     it->DrawH(painter,sz_pix) ;
-    if (scon.status==1)  // включен режим имитации
-      it->ShowTrPosSI(painter,sz_pix,scon.dist,scon.h,pView->trace_time);
+    if (pMKApp->scon.status==1)  // включен режим имитации
+      it->ShowTrPosSI(painter,sz_pix,pMKApp->scon.dist,pMKApp->scon.h,pView->trace_time);
 
-        //      tr.ShowTrPos(painter,sz_pix,scon.dist,pView->trace_time);
 
    }
 //
@@ -49,11 +50,12 @@ void SI_XH::paintEvent(QPaintEvent* /*paint*/)
 }
 void SI_XH::mouseMoveEvent(QMouseEvent *event)
 {
+ MKApp* pMKApp=(MKApp*)qApp;
 
  QPoint point=event->pos();
  float ftmp;
  ftmp =
-         ((height() -point.y()-1.0)*(float)scon.h)
+         ((height() -point.y()-1.0)*(float)pMKApp->scon.h)
      /height();
  QString str;
 

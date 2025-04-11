@@ -6,6 +6,6 @@
 #include "mainwindowTrace.h"
 
 
-SetControl scon; // управляющие параметры
+//SetControl scon; // управляющие параметры
 
 MainwindowTrace* pMW=0;

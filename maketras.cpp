@@ -3,7 +3,8 @@
 
 #include "maketras.h"
 #include "convcoor.h"
-#include "setcontrol.h"
+//#include "setcontrol.h"
+#include "mkapp.h"
 
 TrasPoint::TrasPoint(float B1,float D1,int H1,unsigned int A1,unsigned int V1)
 {
@@ -53,16 +54,18 @@ int Tras::AddTP(float B,float D,unsigned int H1,
 }
 void Tras::DrawH(QPainter& painter,QSize sz_pix)
 {
- extern SetControl scon; // управляющие параметры
+// extern SetControl scon; // управляющие параметры
+ MKApp* pMKApp=(MKApp*)qApp;
+
  double fx,fy;
  int x,y;
  int size = m_TrasPoint.size();
  if (size==0)  // Если нет точек выходим
         return;
  BDToXY(m_TrasPoint[0].B,m_TrasPoint[0].D,fx,fy);
- x = fx*sz_pix.width()/(scon.dist*2)+(float)sz_pix.width()/2;
+ x = fx*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
 /// y =  -fy*sz_pix.height()/(dist*2) + (float)sz_pix.height()/2;
- y =sz_pix.height()-1.0- (m_TrasPoint[0].H*sz_pix.height())/(scon.h*1000.0);
+ y =sz_pix.height()-1.0- (m_TrasPoint[0].H*sz_pix.height())/(pMKApp->scon.h*1000.0);
  // Вывод начала трассы
  painter.drawRect(x,y,3,3);
  // Вывод линий
@@ -70,20 +73,20 @@ void Tras::DrawH(QPainter& painter,QSize sz_pix)
  {
   int x2,y2;
   BDToXY(m_TrasPoint[i-1].B,m_TrasPoint[i-1].D,fx,fy);
-  x = fx*sz_pix.width()/(scon.dist*2)+(float)sz_pix.width()/2;
-  y =sz_pix.height()-1.0- (m_TrasPoint[i-1].H*sz_pix.height())/(scon.h*1000.0);
+  x = fx*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
+  y =sz_pix.height()-1.0- (m_TrasPoint[i-1].H*sz_pix.height())/(pMKApp->scon.h*1000.0);
 
   BDToXY(m_TrasPoint[i].B,m_TrasPoint[i].D,fx,fy);
-  x2 = fx*sz_pix.width()/(scon.dist*2)+(float)sz_pix.width()/2;
-  y2 =sz_pix.height()-1.0- (m_TrasPoint[i].H*sz_pix.height())/(scon.h*1000.0);
+  x2 = fx*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
+  y2 =sz_pix.height()-1.0- (m_TrasPoint[i].H*sz_pix.height())/(pMKApp->scon.h*1000.0);
 
   painter.drawLine(x,y,x2,y2);
 
  }
  // вывод точки рубежа
  BDToXY(m_TrasPoint[NumTR].B,m_TrasPoint[NumTR].D,fx,fy);
- x = fx*sz_pix.width()/(scon.dist*2)+(float)sz_pix.width()/2;
- y =sz_pix.height()-1.0- (m_TrasPoint[NumTR].H*sz_pix.height())/(scon.h*1000.0);
+ x = fx*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
+ y =sz_pix.height()-1.0- (m_TrasPoint[NumTR].H*sz_pix.height())/(pMKApp->scon.h*1000.0);
  painter.drawRect(x,y,3,3);
 
 
@@ -91,8 +94,8 @@ void Tras::DrawH(QPainter& painter,QSize sz_pix)
  BDToXY(m_TrasPoint[0].B,m_TrasPoint[0].D,fx,fy);
  fy = m_TrasPoint[0].H; // метры
 
- x = fx*sz_pix.width()/(scon.dist*2)+(float)sz_pix.width()/2;
- y =sz_pix.height()-1.0- (fy*sz_pix.height())/(scon.h*1000.0);
+ x = fx*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
+ y =sz_pix.height()-1.0- (fy*sz_pix.height())/(pMKApp->scon.h*1000.0);
  painter.drawRect(x,y,3,3);
 
  // вывод реальных точек - не работает
@@ -109,8 +112,8 @@ void Tras::DrawH(QPainter& painter,QSize sz_pix)
    fy_sum=fy+m_RealTT[i].fvz*cur_t +(m_RealTT[i].faz/2)*cur_t*cur_t;
 
 
-   x = fx_sum*sz_pix.width()/(scon.dist*2)+(float)sz_pix.width()/2;
-   y =sz_pix.height()-1.0- (fy_sum*sz_pix.height())/(scon.h*1000.0);
+   x = fx_sum*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
+   y =sz_pix.height()-1.0- (fy_sum*sz_pix.height())/(pMKApp->scon.h*1000.0);
 
    if (m_RealTT[i].fax !=0 ||
         m_RealTT[i].fay!=0 ||
@@ -136,6 +139,7 @@ void Tras::DrawH(QPainter& painter,QSize sz_pix)
 void Tras::Draw(QPainter& painter,QSize sz_pix,float dist)
 {
 //// SetControl scon; // управляющие параметры
+// MKApp* pMKApp=(MKApp*)qApp;
 
  double fx,fy;
  int x,y;

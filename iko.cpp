@@ -15,6 +15,7 @@
 #include "proppointtr.h"
 #include "DocTrace.h"
 ////#include "rightform.h"
+#include "mkapp.h"
 
 extern MainwindowTrace* pMW;
 
@@ -38,6 +39,8 @@ IKO::IKO(QWidget *parent) : QLabel(parent)
 
 void IKO::paintEvent(QPaintEvent*)
 {
+ //   MKApp* pMKApp=(MKApp*)qApp;
+
     QPainter painter;
     painter.begin(this);
 ///    painter.setPen(QPen(QColor(100,100,0),4));
@@ -65,7 +68,8 @@ void IKO::paintEvent(QPaintEvent*)
   QPoint center;
   center.setX((width()-0.5)/2);
   center.setY(height()/2);
-  extern   SetControl scon; // управляющие параметры
+ // extern   SetControl scon; // управляющие параметры
+  MKApp* pMKApp=(MKApp*)qApp;
 
   for (; it!=m_pDoc->m_Trackes.end();++it)
   {
@@ -76,9 +80,9 @@ void IKO::paintEvent(QPaintEvent*)
    sz_pix.setWidth(width());
    // рисование трассы на ИКО
 
-   tr.Draw(painter,sz_pix,scon.dist);
-   if (scon.status==1)  // включен режим имитации
-     tr.ShowTrPos(painter,sz_pix,scon.dist,pView->trace_time);
+   tr.Draw(painter,sz_pix,pMKApp->scon.dist);
+   if (pMKApp->scon.status==1)  // включен режим имитации
+     tr.ShowTrPos(painter,sz_pix,pMKApp->scon.dist,pView->trace_time);
   }
   if (DragMode)
   {
@@ -90,8 +94,8 @@ void IKO::paintEvent(QPaintEvent*)
 
    DkmBToXY(m_pDoc->m_Trackes[cur_sel-1].m_TrasPoint[num_lp-1].D,m_pDoc->m_Trackes[cur_sel-1].m_TrasPoint[num_lp-1].B,
           fx,fy);
-   x = fx*width()/(scon.dist*2)+(float)width()/2;
-   y =  -fy*height()/(scon.dist*2) + (float)height()/2;
+   x = fx*width()/(pMKApp->scon.dist*2)+(float)width()/2;
+   y =  -fy*height()/(pMKApp->scon.dist*2) + (float)height()/2;
    painter.drawLine(x,y,dragPoint.x(),dragPoint.y());
   }
  }
@@ -229,13 +233,14 @@ void IKO::mouseMoveEvent(QMouseEvent *event)
 void IKO::GetDB(QPoint mp, float &distance_km, float &b)
 {
 
-  extern SetControl scon; // управляющие параметры
+//  extern SetControl scon; // управляющие параметры
+  MKApp* pMKApp=(MKApp*)qApp;
 
   QPoint center;
   center.setX((width()-0.5)/2.0);
   center.setY(height()/2.0);
 
-  double ksq1=4*scon.dist*scon.dist;
+  double ksq1=4*pMKApp->scon.dist*pMKApp->scon.dist;
   double sq1=ksq1*(center.x()-mp.x())*(center.x()-mp.x());
   sq1=sq1/(width()*width());
 
@@ -254,8 +259,8 @@ void IKO::GetDB(QPoint mp, float &distance_km, float &b)
   }
   else
   {
-      double x_km=x*scon.dist/width();
-      double y_km=y*scon.dist/height();
+      double x_km=x*pMKApp->scon.dist/width();
+      double y_km=y*pMKApp->scon.dist/height();
       double b_grad,sq;
       GetBG( x_km,y_km,b_grad,sq); // получить пеленг в град и даль хY
       b=(float)b_grad;
