@@ -10,6 +10,8 @@ public:
     MKApp(int &argc, char **argv);
     bool LoadSettings();
     SetControl scon; // управляющие параметры
+private:
+    QString fname="trace.conf";
 
 };
 

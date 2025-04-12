@@ -9,20 +9,6 @@ int main(int argc, char *argv[])
     MKApp a(argc, argv);
 
     extern  MainwindowTrace* pMW;
-    QString fname="trace.conf";
-    QFile checkConfig(fname);
-    if(checkConfig.exists())
-    {
-        QSettings m_settings( fname, QSettings::IniFormat );
-
-
-        unsigned typ = m_settings.value("/Settings/type_app").toUInt();
-        qDebug() << typ;
-
-    }
-    else {
-
-    }
     MKApp* pMKApp=(MKApp*)qApp;
     if (!pMKApp->LoadSettings())
      return 1;
