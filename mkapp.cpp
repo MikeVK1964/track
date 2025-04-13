@@ -13,14 +13,14 @@ MKApp::MKApp(int &argc, char **argv)
 bool MKApp::LoadSettings()
 {
     QFile checkConfig(QDir::currentPath()+"/"+fname);
-    qDebug() << QDir::currentPath();
     if(checkConfig.exists())
     {
         QSettings m_settings( QDir::currentPath()+"/"+fname, QSettings::IniFormat );
 
 
-        unsigned typ = m_settings.value("Setting/type_app").toUInt();
-        qDebug() << typ;
+         type_imit = m_settings.value("Imit/type_app").toUInt();
+         SleepingTime=m_settings.value("Imit/SleepingTime").toUInt();
+         qDebug() << type_imit  << SleepingTime;
 
     }
     else       return false;

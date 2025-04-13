@@ -191,7 +191,7 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
     tmr = new QTimer();
 
     connect(tmr, SIGNAL(timeout()),this, SLOT(OnTime()));
-    tmr->start(500);  // таймер срабатывает 2 раза в секунду
+//    tmr->start(500);  // таймер срабатывает 2 раза в секунду
 
 }
 
@@ -381,9 +381,14 @@ void MainwindowTrace::OnImit()
       pMKApp->scon.status=1; // запуск полетов
       pView->beg_tick = GetTickCount();  //GetTickCount64();
       pView->trace_time=0;  // время движения при имитации
-      pdoc->SetStartTime();
+      pdoc->SetStartTime();  // установка задержек, для обработки точек рубежа
+
+      MKApp* pMKApp=(MKApp*)qApp;
+      tmr->start(pMKApp->GetSleepingTime());
+
       return;
   }
+  tmr->stop(); // остановка таймера
   pMKApp->scon.status=0;  // нет полетов
 
  // delete plg ;
