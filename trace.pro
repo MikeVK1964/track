@@ -16,6 +16,7 @@ SOURCES += main.cpp\
     dlgimit.cpp \
     doctras.cpp \
     mkapp.cpp \
+    mkimitthread.cpp \
     new_traceview.cpp \
     iko.cpp \
     proppointtr.cpp \
@@ -30,6 +31,7 @@ HEADERS  += \
     DocTrace.h \
     dlgimit.h \
     mkapp.h \
+    mkimitthread.h \
     new_traceview.h \
     iko.h \
     proppointtr.h \

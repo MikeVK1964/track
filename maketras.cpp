@@ -393,7 +393,7 @@ void Tras::ShowTrPosSI(QPainter& painter,QSize sz_pix,float dist,int max_h_km,do
 // Получить координаты точки
 // return : false - нет трассы
 bool Tras::GetCoor( double tick_c, float &fx1, float &fy1, int &iz1,
-float fvx1,float fvy1,float fvz1, float fax1,float fay1,float faz1 )
+float fvx1,float fvy1,float fvz1, float fax1,float fay1,float /*faz1*/ )
 {
   int size = m_RealTT.size();
   int i,iz;
@@ -426,7 +426,7 @@ float fvx1,float fvy1,float fvz1, float fax1,float fay1,float faz1 )
       fvz1= m_RealTT[i].fvz;
       fax1= m_RealTT[i].fax;
       fay1= m_RealTT[i].fay;
-      faz1= m_RealTT[i].faz;
+      //faz1= m_RealTT[i].faz;
 
       return true;
      }

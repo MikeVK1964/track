@@ -192,6 +192,7 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
 
     connect(tmr, SIGNAL(timeout()),this, SLOT(OnTime()));
 //    tmr->start(500);  // таймер срабатывает 2 раза в секунду
+    connect(&imit_tread, SIGNAL(MkTimeEvent()),this, SLOT(OnTime()));
 
 }
 
@@ -366,6 +367,8 @@ void MainwindowTrace::OnImit()
   MKApp* pMKApp=(MKApp*)qApp;
 
   DlgImit plg(this);
+ // MKApp* pMKApp=(MKApp*)qApp;
+
   if ( plg.exec()==QDialog::Accepted)
   {
       New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
@@ -383,18 +386,23 @@ void MainwindowTrace::OnImit()
       pView->trace_time=0;  // время движения при имитации
       pdoc->SetStartTime();  // установка задержек, для обработки точек рубежа
 
-      MKApp* pMKApp=(MKApp*)qApp;
-      tmr->start(pMKApp->GetSleepingTime());
-
+      if (pMKApp->GetImitType()==1)
+       tmr->start(pMKApp->GetSleepingTime());
+      if (pMKApp->GetImitType()==2)
+         imit_tread.start();
       return;
   }
-  tmr->stop(); // остановка таймера
+  if (pMKApp->GetImitType()==1)
+   tmr->stop(); // остановка таймера
+//  if (qApp->GetImitType()==2)
+//    imit_tread.finished();
+  //imit_tread.fi
   pMKApp->scon.status=0;  // нет полетов
 
  // delete plg ;
 
 }
-// Продвижение и отображение трасс
+// Продвижение и отображение трасс -- public слот
 void MainwindowTrace::OnTime()
 {
     MKApp* pMKApp=(MKApp*)qApp;

@@ -14,5 +14,5 @@ int main(int argc, char *argv[])
      return 1;
     pMW = new  MainwindowTrace;
     pMW->show();
-    return a.exec();
+    return a.exec();     // запуск цикла обработки сообщений
 }
