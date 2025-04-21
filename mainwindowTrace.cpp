@@ -349,25 +349,20 @@ void MainwindowTrace::OnOpen()
 }
 void MainwindowTrace::CommonSave()
 {
-//    setWindowTitle("trace-"+str);
-//    setWindowFilePath(str);
 
     QString fname= windowFilePath();
 
     New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
     DocTras* pdoc= pView->GetDocument();
-    //QMessageBox msg;
     pdoc->Save(fname);
 
 }
 // Вызов диалога запуска имитации
 void MainwindowTrace::OnImit()
 {
- // extern SetControl scon; // управляющие параметры
   MKApp* pMKApp=(MKApp*)qApp;
 
   DlgImit plg(this);
- // MKApp* pMKApp=(MKApp*)qApp;
 
   if ( plg.exec()==QDialog::Accepted)
   {

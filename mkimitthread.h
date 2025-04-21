@@ -13,7 +13,6 @@ public:
 signals:
       void MkTimeEvent();
 public slots:
-      void slotOnTime();
 };
 
 #endif // MKIMITTHREAD_H

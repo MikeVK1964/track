@@ -11,16 +11,14 @@ MkImitThread::MkImitThread(QObject *parent)
 void MkImitThread::run()
 {
     QTimer timer;
-    connect(&timer, SIGNAL(timeout()), SLOT(slotOnTime()));
 
-    MKApp* pMKApp=(MKApp*)qApp;
-//    tmr->start(pMKApp->GetSleepingTime());
+    connect(&timer,
+            &QTimer::timeout,this,
+            [=](){ emit MkTimeEvent(); });
+
+   MKApp* pMKApp=(MKApp*)qApp;
 
     timer.start(pMKApp->GetSleepingTime());
 
     exec(); // запуск цикла сообщений
-}
-void MkImitThread::slotOnTime()
-{
-   emit MkTimeEvent();
 }
