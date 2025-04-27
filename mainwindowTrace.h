@@ -4,6 +4,8 @@
 #include <QtGui>
 #include <QMainWindow>
 #include <time.h>
+#include <QtNetwork>
+
 //#include "QMainWindowTrace"
 #include "mkimitthread.h"
 
@@ -19,7 +21,7 @@ public:
 public slots:
     void slotAbout();
     void slotSaveAs();
-    void OnTime();
+    void SlotMoveShow();
 
 private slots:
  void slotChangeScale(QAction* prAc);
@@ -33,9 +35,10 @@ private:
     QAction* pActScale[5];
     QAction* pActHeight[3];
     void CommonSave();
-    QTimer *tmr; //Адресная переменная таймера
+////    QTimer *tmr; //Адресная переменная таймера
     MkImitThread imit_tread;
-
+/////    QTcpServer* m_ptcpServer;
+    QTcpSocket* m_pTcpSocket;
 };
 
 #endif // MAINWINDOW_H

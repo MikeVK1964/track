@@ -58,18 +58,12 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
       connect(pactSave, SIGNAL(triggered()), this, SLOT(slotSave()));
 
 
-//     pmnuFile->addAction(pactNew);
-//     connect(pmnuFile,SIGNAL(triggered(QAction*)),SLOT(slotChangeH(QAction*)));
-
-    // pmnuFile->addAction(pactOpen,this,SLOT(slotNew()));
      pmnuFile->addAction(pactSave);
      pmnuFile->addAction("Save &As...", this, SLOT(slotSaveAs()));
 
      pmnuFile->addSeparator();
-////     pmnuFile->addAction(tr("Выход"),qApp,SLOT(quit()),QKeySequence("CTRL+Q"));
      pmnuFile->addAction(tr("Выход"),QKeySequence("CTRL+Q"),qApp,SLOT(quit()));
 
-///     pmnuFile->addAction(tr("Выход"),QKeySequence("CTRL+Q"),qApp,SLOT(quit()));
 
      QMenu* pmnuMode = new QMenu(tr("&Отображение"));
      QMenu* pmnuSubMenuShow = new QMenu(tr("Масштаб ИКО"),pmnuMode);
@@ -141,20 +135,41 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
       pActHeight[2]->setIconVisibleInMenu(false);
       connect(pmnuSubMenuHeight,SIGNAL(triggered(QAction*)),SLOT(slotChangeH(QAction*)));
 
-//      QMenu* pmnuSubMenuImit = new QMenu(tr("Имитация"),pmnuMode);
-//     pmnuMode->addMenu(pmnuSubMenuImit);
 
 
      QAction* pactOnImit = new QAction("Start Imit", 0);
-      pactOnImit->setText("&Имитация..."); // изменяет Open file
+      pactOnImit->setText("&Имитация (без сети) ..."); //
       pactOnImit->setShortcut(QKeySequence("CTRL+I"));
       pactOnImit->setToolTip("Запустить имитацию");
       pactOnImit->setStatusTip("Запустить имитацию");
       pactOnImit->setWhatsThis("Запустить имитацию");
-////      pactOpen->setIcon(QPixmap(fileopen));
 
       connect(pactOnImit, SIGNAL(triggered()), this, SLOT(OnImit()));
      pmnuMode->addAction(pactOnImit);
+
+     MKApp* pMKApp=(MKApp*)qApp;
+     if (pMKApp->GetImitType()==1)
+     {
+         QAction* pactOnImitServer = new QAction("Start Imit server", 0);
+         pactOnImitServer->setText("&Имитация (сервер) ..."); //
+         pactOnImitServer->setToolTip("Запустить имитацию");
+         pactOnImitServer->setStatusTip("Запустить имитацию");
+         pactOnImitServer->setWhatsThis("Запустить имитацию");
+         pmnuMode->addAction(pactOnImitServer);
+
+
+     }
+     if (pMKApp->GetImitType()==2)
+     {
+         QAction* pactOnImitClient = new QAction("Start Imit client", 0);
+         pactOnImitClient->setText("&Имитация (клиент) ..."); //
+         pactOnImitClient->setToolTip("Запустить имитацию");
+         pactOnImitClient->setStatusTip("Запустить имитацию");
+         pactOnImitClient->setWhatsThis("Запустить имитацию");
+         pmnuMode->addAction(pactOnImitClient);
+
+
+     }
 
 
 
@@ -188,11 +203,8 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
     setCentralWidget(pView);
     setWindowTitle(TITLE_NO_NAME);
 
-    tmr = new QTimer();
-
-    connect(tmr, SIGNAL(timeout()),this, SLOT(OnTime()));
-//    tmr->start(500);  // таймер срабатывает 2 раза в секунду
-    connect(&imit_tread, SIGNAL(MkTimeEvent()),this, SLOT(OnTime()));
+    connect(&imit_tread, SIGNAL(MkTimeEvent()),this, SLOT(SlotMoveShow()));
+    m_pTcpSocket = new QTcpSocket(this);
 
 }
 
@@ -324,13 +336,6 @@ void MainwindowTrace::slotSave()
    setWindowFilePath(str);
 
  }
-#if 0
- QString fname= windowFilePath();
-
- New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
- DocTras* pdoc= pView->GetDocument();
- pdoc->Save(fname);
-#endif
  CommonSave();
 }
 //**********************************************************
@@ -381,24 +386,18 @@ void MainwindowTrace::OnImit()
       pView->trace_time=0;  // время движения при имитации
       pdoc->SetStartTime();  // установка задержек, для обработки точек рубежа
 
-      if (pMKApp->GetImitType()==1)
-       tmr->start(pMKApp->GetSleepingTime());
-      if (pMKApp->GetImitType()==2)
-         imit_tread.start();
+      imit_tread.start(QThread::HighPriority);  // вызывает run процесса
+
       return;
   }
-  if (pMKApp->GetImitType()==1)
-   tmr->stop(); // остановка таймера
-//  if (qApp->GetImitType()==2)
-//    imit_tread.finished();
-  //imit_tread.fi
+//  if (pMKApp->GetImitType()==2)
+  imit_tread.terminate();
   pMKApp->scon.status=0;  // нет полетов
 
- // delete plg ;
 
 }
 // Продвижение и отображение трасс -- public слот
-void MainwindowTrace::OnTime()
+void MainwindowTrace::SlotMoveShow()
 {
     MKApp* pMKApp=(MKApp*)qApp;
 
@@ -406,7 +405,6 @@ void MainwindowTrace::OnTime()
           return;
 
     New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
-///    DocTras* pdoc= pView->GetDocument();
 
      pView->trace_time = pView->trace_time+ ((GetTickCount()-(double)pView->beg_tick)*(pMKApp->scon.v_imi+1))/CLOCKS_PER_SEC;  //1000;
      pView->beg_tick =  GetTickCount();

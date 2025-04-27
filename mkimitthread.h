@@ -6,7 +6,7 @@
 
 class MkImitThread : public QThread
 {
-Q_OBJECT
+Q_OBJECT    // чтобы использовать сигналы и слоты
 public:
     explicit MkImitThread(QObject *parent = nullptr);
       void run();

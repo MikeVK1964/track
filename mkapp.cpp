@@ -20,7 +20,7 @@ bool MKApp::LoadSettings()
 
          type_imit = m_settings.value("Imit/type_app").toUInt();
          SleepingTime=m_settings.value("Imit/SleepingTime").toUInt();
-         qDebug() << type_imit  << SleepingTime;
+///         qDebug() << type_imit  << SleepingTime;
 
     }
     else       return false;
