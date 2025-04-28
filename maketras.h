@@ -69,15 +69,13 @@ public:
  int CheckTras();
  double start_time=0.0;  //  begining time since imitation
  void CalcV(int i, float &VX, float &VY,float &VZ,float& DT);
-
+ bool GetCurrentCoor_IKO(double& x_km,double& y_km,double trace_time);
 private:
- //void BDToXY(float B, float D, float &x, float &y);
  void BDToXY(double B, double D, double &x, double &y);
 
  QVector<RealTT> m_RealTT; // вектор действительных точек трассы
 
  friend QDataStream &operator <<(QDataStream &stream, const Tras &A){
- //    stream << A.type_tar  ;
      stream << A.type_tar<< A.NumTR ;//<< A.m_TrasPoint.count();// << start_time;
      stream << A.m_TrasPoint;
 //     for (qsizetype i=0;i<A.m_TrasPoint.count();i++)

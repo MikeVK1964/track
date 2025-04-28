@@ -442,4 +442,13 @@ float fvx1,float fvy1,float fvz1, float fax1,float fay1,float /*faz1*/ )
   }
   return false;
 }
+//*********************************************************************
+// x_km -  координаты на ИКО по Х в км
+// y_km -  координаты на ИКО по Y в км
+// trace_time - время движения с начала имитации в секундах
+// возврат true -- есть координаты трассы
+bool Tras::GetCurrentCoor_IKO(double& x_km,double& y_km,double trace_time)
+{
+
+}
 

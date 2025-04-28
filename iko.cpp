@@ -82,7 +82,10 @@ void IKO::paintEvent(QPaintEvent*)
 
    tr.Draw(painter,sz_pix,pMKApp->scon.dist);
    if (pMKApp->scon.status==1)  // включен режим имитации
-     tr.ShowTrPos(painter,sz_pix,pMKApp->scon.dist,pView->trace_time);
+   {
+
+       tr.ShowTrPos(painter,sz_pix,pMKApp->scon.dist,pView->trace_time);
+   }
   }
   if (DragMode)
   {
