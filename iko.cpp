@@ -81,10 +81,19 @@ void IKO::paintEvent(QPaintEvent*)
    // рисование трассы на ИКО
 
    tr.Draw(painter,sz_pix,pMKApp->scon.dist);
+
    if (pMKApp->scon.status==1)  // включен режим имитации
    {
 
-       tr.ShowTrPos(painter,sz_pix,pMKApp->scon.dist,pView->trace_time);
+     //  tr.ShowTrPos(painter,sz_pix,pMKApp->scon.dist,pView->trace_time);
+       float fx_km,fy_km;
+       if (tr.GetCurrentCoor_IKO(fx_km,fy_km,pView->trace_time)) {
+           int x = fx_km*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
+           int y = - fy_km*sz_pix.height()/(pMKApp->scon.dist*2) + (float)sz_pix.height()/2;
+
+           painter.drawRect(x-3,y-3,6,6);
+
+       }
    }
   }
   if (DragMode)

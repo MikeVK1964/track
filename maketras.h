@@ -57,10 +57,8 @@ public:
  Tras(float B,float D,int Z1,
       kmb_trace::TargetType type_tar1=kmb_trace::Unknown);
  void Draw(QPainter& painter,QSize sz_pix,float dist);
- void DrawH(QPainter& painter,QSize sz_pix);
- void ShowTrPos(QPainter& painter,QSize sz_pix,float dist,double time_c);
-// void ShowTrPos(int max_y,float fmax_ykm,double tick_c,MGraph* p,MGraph* ppic
-//     ,int max_y_xh,int max_h,MGraph* p_xh,MGraph* ppic_xh);
+ void DrawH(QPainter& painter,QSize sz_pix,float dist, int max_h_km);
+// void ShowTrPos(QPainter& painter,QSize sz_pix,float dist,double time_c);
  void ShowTrPosSI(QPainter& painter,QSize sz_pix,float dist,int max_h_km,double time_c);
 
  QVector<TrasPoint> m_TrasPoint; // массив точек трасс
@@ -69,7 +67,9 @@ public:
  int CheckTras();
  double start_time=0.0;  //  begining time since imitation
  void CalcV(int i, float &VX, float &VY,float &VZ,float& DT);
- bool GetCurrentCoor_IKO(double& x_km,double& y_km,double trace_time);
+ bool GetCurrentCoor_IKO(float& x_km,float& y_km,double trace_time);
+ bool GetCurrentCoor_SI(int& iz_m,float& x_km,double trace_time);
+
 private:
  void BDToXY(double B, double D, double &x, double &y);
 

@@ -28,4 +28,8 @@ void DlgImit::on_comboBoxValSpeed_activated(int index)
 
     pMKApp->scon.v_imi = index;
 }
+bool DlgImit::GetStateNetServer()
+{
+  return ui->checkBox_Net->isChecked();
+}
 

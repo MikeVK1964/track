@@ -31,17 +31,27 @@ void SI_XH::paintEvent(QPaintEvent* /*paint*/)
   QVector<Tras>::iterator it=m_pDoc->m_Trackes.begin();
 
   painter.begin(this);
-   // цикл по всем трассам
+  QSize sz_pix;
+  sz_pix.setHeight(height());
+  sz_pix.setWidth(width());
+
+  // цикл по всем трассам
    for (; it!=m_pDoc->m_Trackes.end();++it)
    {
-    QSize sz_pix;
-    sz_pix.setHeight(height());
-    sz_pix.setWidth(width());
 
-    it->DrawH(painter,sz_pix) ;
+    it->DrawH(painter,sz_pix,pMKApp->scon.dist,pMKApp->scon.h ) ;
     if (pMKApp->scon.status==1)  // включен режим имитации
-      it->ShowTrPosSI(painter,sz_pix,pMKApp->scon.dist,pMKApp->scon.h,pView->trace_time);
+    {
+        int z_m=0;
+        float x_km=0;
+        if (it->GetCurrentCoor_SI(z_m,x_km,pView->trace_time))  {
+            int x = x_km*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
+            int y = - z_m*sz_pix.height()/(pMKApp->scon.h*1000) + (float)sz_pix.height();
+            painter.drawRect(x-3,y-5,6,6);
 
+        }
+//        it->ShowTrPosSI(painter,sz_pix,pMKApp->scon.dist,pMKApp->scon.h,pView->trace_time);
+    }
 
    }
 //

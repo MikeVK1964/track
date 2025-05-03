@@ -17,6 +17,7 @@ public:
 
 private:
     Ui::PropPointTr *ui;
+
     int num_point;
     Tras* ptr;
     void accept() override;

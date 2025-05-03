@@ -386,6 +386,8 @@ void MainwindowTrace::OnImit()
       pView->trace_time=0;  // время движения при имитации
       pdoc->SetStartTime();  // установка задержек, для обработки точек рубежа
 
+      bool tt=plg.GetStateNetServer();
+
       imit_tread.start(QThread::HighPriority);  // вызывает run процесса
 
       return;

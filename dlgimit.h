@@ -14,7 +14,7 @@ class DlgImit : public QDialog
 public:
     explicit DlgImit(QWidget *parent = nullptr);
     ~DlgImit();
-
+    bool GetStateNetServer();
 private slots:
     void on_pushButton_clicked();
 

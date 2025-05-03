@@ -52,10 +52,11 @@ int Tras::AddTP(float B,float D,unsigned int H1,
 
  return 0;
 }
-void Tras::DrawH(QPainter& painter,QSize sz_pix)
+// Рисование трасс в СИ
+// dist - размер ико в км
+//h_m - высота СИ в метрах
+void Tras::DrawH(QPainter& painter,QSize sz_pix,float dist,  int max_h_km)
 {
-// extern SetControl scon; // управляющие параметры
- MKApp* pMKApp=(MKApp*)qApp;
 
  double fx,fy;
  int x,y;
@@ -63,9 +64,8 @@ void Tras::DrawH(QPainter& painter,QSize sz_pix)
  if (size==0)  // Если нет точек выходим
         return;
  BDToXY(m_TrasPoint[0].B,m_TrasPoint[0].D,fx,fy);
- x = fx*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
-/// y =  -fy*sz_pix.height()/(dist*2) + (float)sz_pix.height()/2;
- y =sz_pix.height()-1.0- (m_TrasPoint[0].H*sz_pix.height())/(pMKApp->scon.h*1000.0);
+ x = fx*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
+ y =sz_pix.height()-1.0- (m_TrasPoint[0].H*sz_pix.height())/(max_h_km*1000.0);
  // Вывод начала трассы
  painter.drawRect(x,y,3,3);
  // Вывод линий
@@ -73,20 +73,20 @@ void Tras::DrawH(QPainter& painter,QSize sz_pix)
  {
   int x2,y2;
   BDToXY(m_TrasPoint[i-1].B,m_TrasPoint[i-1].D,fx,fy);
-  x = fx*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
-  y =sz_pix.height()-1.0- (m_TrasPoint[i-1].H*sz_pix.height())/(pMKApp->scon.h*1000.0);
+  x = fx*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
+  y =sz_pix.height()-1.0- (m_TrasPoint[i-1].H*sz_pix.height())/(max_h_km*1000.0);
 
   BDToXY(m_TrasPoint[i].B,m_TrasPoint[i].D,fx,fy);
-  x2 = fx*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
-  y2 =sz_pix.height()-1.0- (m_TrasPoint[i].H*sz_pix.height())/(pMKApp->scon.h*1000.0);
+  x2 = fx*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
+  y2 =sz_pix.height()-1.0- (m_TrasPoint[i].H*sz_pix.height())/(max_h_km*1000.0);
 
   painter.drawLine(x,y,x2,y2);
 
  }
  // вывод точки рубежа
  BDToXY(m_TrasPoint[NumTR].B,m_TrasPoint[NumTR].D,fx,fy);
- x = fx*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
- y =sz_pix.height()-1.0- (m_TrasPoint[NumTR].H*sz_pix.height())/(pMKApp->scon.h*1000.0);
+ x = fx*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
+ y =sz_pix.height()-1.0- (m_TrasPoint[NumTR].H*sz_pix.height())/(max_h_km*1000.0);
  painter.drawRect(x,y,3,3);
 
 
@@ -94,8 +94,8 @@ void Tras::DrawH(QPainter& painter,QSize sz_pix)
  BDToXY(m_TrasPoint[0].B,m_TrasPoint[0].D,fx,fy);
  fy = m_TrasPoint[0].H; // метры
 
- x = fx*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
- y =sz_pix.height()-1.0- (fy*sz_pix.height())/(pMKApp->scon.h*1000.0);
+ x = fx*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
+ y =sz_pix.height()-1.0- (fy*sz_pix.height())/(max_h_km*1000.0);
  painter.drawRect(x,y,3,3);
 
  // вывод реальных точек - не работает
@@ -112,8 +112,8 @@ void Tras::DrawH(QPainter& painter,QSize sz_pix)
    fy_sum=fy+m_RealTT[i].fvz*cur_t +(m_RealTT[i].faz/2)*cur_t*cur_t;
 
 
-   x = fx_sum*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
-   y =sz_pix.height()-1.0- (fy_sum*sz_pix.height())/(pMKApp->scon.h*1000.0);
+   x = fx_sum*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
+   y =sz_pix.height()-1.0- (fy_sum*sz_pix.height())/(max_h_km*1000.0);
 
    if (m_RealTT[i].fax !=0 ||
         m_RealTT[i].fay!=0 ||
@@ -147,16 +147,12 @@ void Tras::Draw(QPainter& painter,QSize sz_pix,float dist)
  int size = m_TrasPoint.size();
  if (size==0)  // Если нет точек выходим
         return;
- //qDebug() << "Draw ----------------B = " << m_TrasPoint[0].B << "D = "
- //         << m_TrasPoint[0].D;
 
  BDToXY(m_TrasPoint[0].B,m_TrasPoint[0].D,
         fx,fy);
  x = fx*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
  y =  -fy*sz_pix.height()/(dist*2) + (float)sz_pix.height()/2;
 
- //qDebug() << "ERROR  is here !!! BDToXY after x=  " << x << "y = "
- //         << y;
 
  // Вывод начала трассы
  painter.drawRect(x,y,3,3);
@@ -241,11 +237,8 @@ void Tras::BDToXY(double B, double D, double &x, double &y)
 //***********************************************
 int Tras::CheckTras()
 {
- ////double DX,DY,DZ;
  double tx,ty,tx1,ty1;
  float DT,VX,VY,VZ;
- ////double VX0=0,VY0=0,VZ0=0;
- ////double TP=0;  // время прибытия в ОТ
 
     // Обнуление массива реальных точек
  m_RealTT.erase(m_RealTT.begin(),m_RealTT.end());
@@ -350,25 +343,25 @@ void Tras::CalcV(int i, float &VX, float &VY,float &VZ,float& DT)
 }
 //***************************************************************************
 // Показать положение цели на ИКО в момент time_c
-void Tras::ShowTrPos(QPainter& painter,QSize sz_pix,float dist,double time_c)
-{
-    int size = m_TrasPoint.size();
-    if (size==0)  // Если нет точек выходим
-        return;
-    int x,y;
-    float fx1,fy1;
-    int iz1;
-    float fvx1 = 0;
-    float fvy1 = 0, fvz1 = 0, fax1 = 0, fay1 = 0, faz1 = 0;
-    if (GetCoor(time_c,fx1,fy1,iz1,fvx1,fvy1,fvz1,fax1,fay1,faz1))
-    {
+//void Tras::ShowTrPos(QPainter& painter,QSize sz_pix,float dist,double time_c)
+//{
+//    int size = m_TrasPoint.size();
+//    if (size==0)  // Если нет точек выходим
+//        return;
+//    int x,y;
+//    float fx1,fy1;
+//    int iz1;
+//    float fvx1 = 0;
+//    float fvy1 = 0, fvz1 = 0, fax1 = 0, fay1 = 0, faz1 = 0;
+//    if (GetCoor(time_c,fx1,fy1,iz1,fvx1,fvy1,fvz1,fax1,fay1,faz1))
+//    {
 
-        x = fx1*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
-        y = - fy1*sz_pix.height()/(dist*2) + (float)sz_pix.height()/2;
+//        x = fx1*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
+//        y = - fy1*sz_pix.height()/(dist*2) + (float)sz_pix.height()/2;
 
-        painter.drawRect(x-3,y-3,6,6);
-    }
-}
+//        painter.drawRect(x-3,y-3,6,6);
+//    }
+//}
 //************************************************************
 // Показать положение целей в индикаторе XH
 void Tras::ShowTrPosSI(QPainter& painter,QSize sz_pix,float dist,int max_h_km,double time_c)
@@ -447,8 +440,30 @@ float fvx1,float fvy1,float fvz1, float fax1,float fay1,float /*faz1*/ )
 // y_km -  координаты на ИКО по Y в км
 // trace_time - время движения с начала имитации в секундах
 // возврат true -- есть координаты трассы
-bool Tras::GetCurrentCoor_IKO(double& x_km,double& y_km,double trace_time)
+bool Tras::GetCurrentCoor_IKO(float& x_km,float& y_km,double trace_time)
 {
+    int size = m_TrasPoint.size();
+    if (size==0)  // Если нет точек выходим
+        return false;
+    int iz1;
+    float fvx1 = 0;
+    float fvy1 = 0, fvz1 = 0, fax1 = 0, fay1 = 0, faz1 = 0;
+   if (GetCoor(trace_time,x_km,y_km,iz1,fvx1,fvy1,fvz1,fax1,fay1,faz1))
+      return true;
+    return false;
 
 }
+//***************************************************************
+//
+bool Tras::GetCurrentCoor_SI(int& iz_m,float& x_km,double trace_time)
+{
+    int size = m_TrasPoint.size();
+    if (size==0)  // Если нет точек выходим
+        return false;
+    float fy1=0;
+    float fvx1=0,fvy1=0,fvz1=0,fax1=0,fay1=0,faz1=0;
+    if (GetCoor(trace_time,x_km,fy1,iz_m,fvx1,fvy1,fvz1,fax1,fay1,faz1))
+        return true;
+    return false;
 
+}
