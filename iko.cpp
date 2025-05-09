@@ -86,10 +86,15 @@ void IKO::paintEvent(QPaintEvent*)
    {
 
      //  tr.ShowTrPos(painter,sz_pix,pMKApp->scon.dist,pView->trace_time);
-       float fx_km,fy_km;
-       if (tr.GetCurrentCoor_IKO(fx_km,fy_km,pView->trace_time)) {
-           int x = fx_km*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
-           int y = - fy_km*sz_pix.height()/(pMKApp->scon.dist*2) + (float)sz_pix.height()/2;
+    //   float fx_km,fy_km;
+     //  if (tr.GetCurrentCoor_IKO(fx_km,fy_km,pView->trace_time)) {
+       TargetPositionNet tpn;
+       if (tr.GetCoor(pView->trace_time,tpn)) {
+
+   //        int x = fx_km*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
+   //        int y = - fy_km*sz_pix.height()/(pMKApp->scon.dist*2) + (float)sz_pix.height()/2;
+           int x = tpn.fx_km*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
+           int y = - tpn.fy_km*sz_pix.height()/(pMKApp->scon.dist*2) + (float)sz_pix.height()/2;
 
            painter.drawRect(x-3,y-3,6,6);
 

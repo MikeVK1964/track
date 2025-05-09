@@ -42,11 +42,14 @@ void SI_XH::paintEvent(QPaintEvent* /*paint*/)
     it->DrawH(painter,sz_pix,pMKApp->scon.dist,pMKApp->scon.h ) ;
     if (pMKApp->scon.status==1)  // включен режим имитации
     {
-        int z_m=0;
-        float x_km=0;
-        if (it->GetCurrentCoor_SI(z_m,x_km,pView->trace_time))  {
-            int x = x_km*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
-            int y = - z_m*sz_pix.height()/(pMKApp->scon.h*1000) + (float)sz_pix.height();
+  //      int z_m=0;
+  //      float x_km=0;
+//        if (it->GetCurrentCoor_SI(z_m,x_km,pView->trace_time))  {
+        TargetPositionNet tpn;
+        if (it->GetCoor(pView->trace_time,tpn)) {
+
+            int x = tpn.fx_km*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
+            int y = - tpn.ih_m*sz_pix.height()/(pMKApp->scon.h*1000) + (float)sz_pix.height();
             painter.drawRect(x-3,y-5,6,6);
 
         }

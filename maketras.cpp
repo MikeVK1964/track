@@ -4,7 +4,7 @@
 #include "maketras.h"
 #include "convcoor.h"
 //#include "setcontrol.h"
-#include "mkapp.h"
+///#include "mkapp.h"
 
 TrasPoint::TrasPoint(float B1,float D1,int H1,unsigned int A1,unsigned int V1)
 {
@@ -341,27 +341,6 @@ void Tras::CalcV(int i, float &VX, float &VY,float &VZ,float& DT)
      VZ = (m_TrasPoint[i].H-m_TrasPoint[i-1].H)/DT;
 
 }
-//***************************************************************************
-// Показать положение цели на ИКО в момент time_c
-//void Tras::ShowTrPos(QPainter& painter,QSize sz_pix,float dist,double time_c)
-//{
-//    int size = m_TrasPoint.size();
-//    if (size==0)  // Если нет точек выходим
-//        return;
-//    int x,y;
-//    float fx1,fy1;
-//    int iz1;
-//    float fvx1 = 0;
-//    float fvy1 = 0, fvz1 = 0, fax1 = 0, fay1 = 0, faz1 = 0;
-//    if (GetCoor(time_c,fx1,fy1,iz1,fvx1,fvy1,fvz1,fax1,fay1,faz1))
-//    {
-
-//        x = fx1*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
-//        y = - fy1*sz_pix.height()/(dist*2) + (float)sz_pix.height()/2;
-
-//        painter.drawRect(x-3,y-3,6,6);
-//    }
-//}
 //************************************************************
 // Показать положение целей в индикаторе XH
 void Tras::ShowTrPosSI(QPainter& painter,QSize sz_pix,float dist,int max_h_km,double time_c)
@@ -465,5 +444,13 @@ bool Tras::GetCurrentCoor_SI(int& iz_m,float& x_km,double trace_time)
     if (GetCoor(trace_time,x_km,fy1,iz_m,fvx1,fvy1,fvz1,fax1,fay1,faz1))
         return true;
     return false;
+
+}
+
+bool Tras::GetCoor(double tick_c,TargetPositionNet& tpn)
+{
+    float fvx1, fvy1, fvz1,  fax1, fay1,faz1;
+    return GetCoor(  tick_c, tpn.fx_km, tpn.fy_km , tpn.ih_m,
+    fvx1, fvy1, fvz1,  fax1, fay1, faz1 );
 
 }

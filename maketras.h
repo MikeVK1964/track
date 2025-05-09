@@ -14,12 +14,31 @@ namespace kmb_trace {
 }
 class QPainter;
 
+// класс текущего положения цели
+// используется для передачи по сети
+class TargetPositionNet {
+ public:
+    float  fx_km;
+    float  fy_km;
+    int ih_m;
+    friend QDataStream &operator <<(QDataStream &stream, const TargetPositionNet &A){
+     stream << A.fx_km << A.fy_km << A.ih_m;
+     return stream;
+    }
+    friend QDataStream & operator>> (QDataStream& stream, TargetPositionNet& A){
+        stream >> A.fx_km >> A.fy_km >> A.ih_m ;
+        return stream;
+
+    }
+
+};
+
 // Класс дейcтвительных точек трассы
 
 class RealTT {
 public:
- RealTT(){};
- virtual ~RealTT(){};
+ RealTT(){}
+ virtual ~RealTT(){}
  float fvx,fvy,fvz;
  float fax,fay,faz;
  double time_move;
@@ -29,7 +48,7 @@ public:
 class TrasPoint
 {
 public:
- TrasPoint(){};
+ TrasPoint(){}
 
  TrasPoint(float B1,float D1,int H,unsigned int A=0,unsigned int V=0);
  float B;
@@ -69,7 +88,9 @@ public:
  void CalcV(int i, float &VX, float &VY,float &VZ,float& DT);
  bool GetCurrentCoor_IKO(float& x_km,float& y_km,double trace_time);
  bool GetCurrentCoor_SI(int& iz_m,float& x_km,double trace_time);
-
+ inline bool GetCoor( double tick_c,float& fx,float& fy,int& iz,
+     float fvx1,float fvy1,float fvz1, float fax1,float fay1,float faz1 );
+ bool GetCoor(double tick_c,TargetPositionNet& tpn);
 private:
  void BDToXY(double B, double D, double &x, double &y);
 
@@ -91,8 +112,6 @@ private:
      return stream;
  }
 
- inline bool GetCoor( double tick_c,float& fx,float& fy,int& iz,
-     float fvx1,float fvy1,float fvz1, float fax1,float fay1,float faz1 );
 };
 
 
