@@ -341,26 +341,7 @@ void Tras::CalcV(int i, float &VX, float &VY,float &VZ,float& DT)
      VZ = (m_TrasPoint[i].H-m_TrasPoint[i-1].H)/DT;
 
 }
-//************************************************************
-// Показать положение целей в индикаторе XH
-void Tras::ShowTrPosSI(QPainter& painter,QSize sz_pix,float dist,int max_h_km,double time_c)
-{
-    int size = m_TrasPoint.size();
-    if (size==0)  // Если нет точек выходим
-        return;
-    int x,y;
-    float fx1,fy1;
-    int iz1;
-    float fvx1 = 0;
-    float fvy1 = 0, fvz1 = 0, fax1 = 0, fay1 = 0, faz1 = 0;
-    if (GetCoor(time_c,fx1,fy1,iz1,fvx1,fvy1,fvz1,fax1,fay1,faz1))
-    {
-        x = fx1*sz_pix.width()/(dist*2)+(float)sz_pix.width()/2;
-        y = - iz1*sz_pix.height()/(max_h_km*1000) + (float)sz_pix.height();
-        painter.drawRect(x-3,y-3,6,6);
 
-    }
-}
 //*************************************************************
 // Получить координаты точки
 // return : false - нет трассы
@@ -414,38 +395,7 @@ float fvx1,float fvy1,float fvz1, float fax1,float fay1,float /*faz1*/ )
   }
   return false;
 }
-//*********************************************************************
-// x_km -  координаты на ИКО по Х в км
-// y_km -  координаты на ИКО по Y в км
-// trace_time - время движения с начала имитации в секундах
-// возврат true -- есть координаты трассы
-bool Tras::GetCurrentCoor_IKO(float& x_km,float& y_km,double trace_time)
-{
-    int size = m_TrasPoint.size();
-    if (size==0)  // Если нет точек выходим
-        return false;
-    int iz1;
-    float fvx1 = 0;
-    float fvy1 = 0, fvz1 = 0, fax1 = 0, fay1 = 0, faz1 = 0;
-   if (GetCoor(trace_time,x_km,y_km,iz1,fvx1,fvy1,fvz1,fax1,fay1,faz1))
-      return true;
-    return false;
-
-}
 //***************************************************************
-//
-bool Tras::GetCurrentCoor_SI(int& iz_m,float& x_km,double trace_time)
-{
-    int size = m_TrasPoint.size();
-    if (size==0)  // Если нет точек выходим
-        return false;
-    float fy1=0;
-    float fvx1=0,fvy1=0,fvz1=0,fax1=0,fay1=0,faz1=0;
-    if (GetCoor(trace_time,x_km,fy1,iz_m,fvx1,fvy1,fvz1,fax1,fay1,faz1))
-        return true;
-    return false;
-
-}
 
 bool Tras::GetCoor(double tick_c,TargetPositionNet& tpn)
 {

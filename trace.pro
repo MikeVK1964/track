@@ -13,6 +13,7 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
+    baseiko.cpp \
     dlgimit.cpp \
     doctras.cpp \
     mkapp.cpp \
@@ -29,6 +30,7 @@ SOURCES += main.cpp\
 
 HEADERS  += \
     DocTrace.h \
+    baseiko.h \
     dlgimit.h \
     mkapp.h \
     mkimitthread.h \

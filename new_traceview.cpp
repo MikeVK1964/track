@@ -40,6 +40,9 @@ New_traceView::New_traceView(QWidget* parent)
 // connect(pIKO,SIGNAL(signalAddTras(float b,float dxykm)),
 ///         this,SLOT(slotAddTrass(float,float)));
 
+// connect((BaseIko*)pIKO,SIGNAL(signalDistance(QString)),pright1->ui->label_Distance,
+//         SLOT(setText(QString)));
+
 
  connect(pIKO,SIGNAL(signalDistance(QString)),pright1->ui->label_Distance,
          SLOT(setText(QString)));

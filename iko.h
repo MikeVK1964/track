@@ -1,10 +1,11 @@
 #ifndef IKO_H
 #define IKO_H
-
-#include <QWidget>
 #include <QLabel>
+#include "baseiko.h"
 
-class IKO : public QLabel // QWidget
+class TargetPositionNet;
+//class IKO : public QLabel // QWidget
+class IKO : public BaseIko // QWidget
 {
     Q_OBJECT
 public:
@@ -14,22 +15,16 @@ protected:
     virtual void mousePressEvent(QMouseEvent *event) override;
     virtual void mouseReleaseEvent(QMouseEvent *event) override;
     virtual void mouseMoveEvent(QMouseEvent *event) override;
-////    void contextMenuEvent(QContextMenuEvent *event) override;
     void slotShowContextMenu(const QPoint& pos);
     void ResizeEvent(QResizeEvent* e);
- ///   int heightForWidth( int w ) { return w; } ;
- //    int heightForWidth( int w ) { return w; }
-     /// int heightForWidth(int w) const override;
-   /////  int heightForWidth(int w) override;
-      virtual int heightForWidth(int w) ;
- ///    virtual QSize minimumSizeHint() const override
+    virtual int heightForWidth(int w) ;
+
 signals:
-    void signalBearing(QString strb);
-    void signalDistance(QString d);
-    void sigXkm(QString sxkm);
-    void sigYkm(QString sykm);
-    void signalAddTras(float b,float dxykm);
- ////   void customContextMenuRequested(const QPoint&);
+//    void signalBearing(QString strb);
+//    void signalDistance(QString d);
+//    void sigXkm(QString sxkm);
+//    void sigYkm(QString sykm);
+//    void signalAddTras(float b,float dxykm);
 public slots:
     void OnDelTr();
     void OnRubeg();
@@ -37,8 +32,9 @@ public slots:
     void OnProp();
 
 private:
+//    void ShowTarget(QPainter& painter,TargetPositionNet tpn);
     QList<QPoint> mDrawBuffer;
-    void GetDB(QPoint mp, float &distance_km, float &b);
+
     bool DragMode;
     QPoint dragPoint;
     int num_point;  // найденная точка трассы при нажатии мышью

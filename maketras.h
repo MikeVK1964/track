@@ -77,8 +77,6 @@ public:
       kmb_trace::TargetType type_tar1=kmb_trace::Unknown);
  void Draw(QPainter& painter,QSize sz_pix,float dist);
  void DrawH(QPainter& painter,QSize sz_pix,float dist, int max_h_km);
-// void ShowTrPos(QPainter& painter,QSize sz_pix,float dist,double time_c);
- void ShowTrPosSI(QPainter& painter,QSize sz_pix,float dist,int max_h_km,double time_c);
 
  QVector<TrasPoint> m_TrasPoint; // массив точек трасс
  kmb_trace::TargetType type_tar;
@@ -86,8 +84,6 @@ public:
  int CheckTras();
  double start_time=0.0;  //  begining time since imitation
  void CalcV(int i, float &VX, float &VY,float &VZ,float& DT);
- bool GetCurrentCoor_IKO(float& x_km,float& y_km,double trace_time);
- bool GetCurrentCoor_SI(int& iz_m,float& x_km,double trace_time);
  inline bool GetCoor( double tick_c,float& fx,float& fy,int& iz,
      float fvx1,float fvy1,float fvz1, float fax1,float fay1,float faz1 );
  bool GetCoor(double tick_c,TargetPositionNet& tpn);
@@ -99,13 +95,9 @@ private:
  friend QDataStream &operator <<(QDataStream &stream, const Tras &A){
      stream << A.type_tar<< A.NumTR ;//<< A.m_TrasPoint.count();// << start_time;
      stream << A.m_TrasPoint;
-//     for (qsizetype i=0;i<A.m_TrasPoint.count();i++)
-//       stream << A.m_TrasPoint[i];
      return stream;
  };
-//data_stream >> reinterpret_cast<QSet<qint32>&>(color_set2);
  friend QDataStream & operator>> (QDataStream& stream, Tras& A){
- //    qsizetype num_point_of_trace;
      stream >> reinterpret_cast<int&>(A.type_tar) >> A.NumTR; // >> num_point_of_trace;
      stream >> A.m_TrasPoint;
 

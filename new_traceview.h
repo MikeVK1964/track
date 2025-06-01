@@ -6,9 +6,10 @@
 #include <QTime>
 
 class RightForm;
-class IKO;
+//class IKO;
 class SI_XH;
 class DocTras;
+class BaseIko;
 
 class New_traceView : public QSplitter
 {
@@ -16,7 +17,8 @@ class New_traceView : public QSplitter
 public:
  New_traceView(QWidget* pwgt=0);
     ~New_traceView();
-    IKO* pIKO;
+//    IKO* pIKO;
+    BaseIko* pIKO;
     SI_XH*  psi_xh;
     inline int GetCurSel(){return m_ntr_val;}
     void SetCurSel(int cur_sel);

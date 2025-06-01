@@ -42,18 +42,14 @@ void SI_XH::paintEvent(QPaintEvent* /*paint*/)
     it->DrawH(painter,sz_pix,pMKApp->scon.dist,pMKApp->scon.h ) ;
     if (pMKApp->scon.status==1)  // включен режим имитации
     {
-  //      int z_m=0;
-  //      float x_km=0;
-//        if (it->GetCurrentCoor_SI(z_m,x_km,pView->trace_time))  {
         TargetPositionNet tpn;
         if (it->GetCoor(pView->trace_time,tpn)) {
-
-            int x = tpn.fx_km*sz_pix.width()/(pMKApp->scon.dist*2)+(float)sz_pix.width()/2;
-            int y = - tpn.ih_m*sz_pix.height()/(pMKApp->scon.h*1000) + (float)sz_pix.height();
-            painter.drawRect(x-3,y-5,6,6);
+            ShowTarget(painter, tpn);
+//            int x = tpn.fx_km*width()/(pMKApp->scon.dist*2)+(float)width()/2;
+//            int y = - tpn.ih_m*height()/(pMKApp->scon.h*1000) + (float)height();
+//            painter.drawRect(x-3,y-5,6,6);
 
         }
-//        it->ShowTrPosSI(painter,sz_pix,pMKApp->scon.dist,pMKApp->scon.h,pView->trace_time);
     }
 
    }
@@ -73,12 +69,19 @@ void SI_XH::mouseMoveEvent(QMouseEvent *event)
  QString str;
 
 
-// str.asprintf("H%8.3f",ftmp);
-  str.setNum(ftmp,'g',5);
-/// QMessageBox::critical(NULL,"error",str);
+ str.setNum(ftmp,'g',5);
  str="H: "+str+QString(tr(" км"));
 
  emit signalH(str);
  event->accept();
+
+}
+void SI_XH::ShowTarget(QPainter& painter,TargetPositionNet tpn)
+{
+    MKApp* pMKApp=(MKApp*)qApp;
+
+    int x = tpn.fx_km*width()/(pMKApp->scon.dist*2)+(float)width()/2;
+    int y = - tpn.ih_m*height()/(pMKApp->scon.h*1000) + (float)height();
+    painter.drawRect(x-3,y-5,6,6);
 
 }

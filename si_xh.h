@@ -4,6 +4,7 @@
 #include <QWidget>
 
 //class QPaintEvent;
+class TargetPositionNet;
 class SI_XH : public QWidget
 {
     Q_OBJECT
@@ -12,6 +13,7 @@ public:
 protected:
  virtual void paintEvent(QPaintEvent*);
  virtual void mouseMoveEvent(QMouseEvent *event);
+ void ShowTarget(QPainter& painter,TargetPositionNet tpn);
 
 signals:
     void signalH(QString h) ;
