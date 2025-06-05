@@ -137,29 +137,9 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
 
 
 
-     QAction* pactOnImit = new QAction("Start Imit", 0);
-      pactOnImit->setText("&Имитация (без сети) ..."); //
-      pactOnImit->setShortcut(QKeySequence("CTRL+I"));
-      pactOnImit->setToolTip("Запустить имитацию");
-      pactOnImit->setStatusTip("Запустить имитацию");
-      pactOnImit->setWhatsThis("Запустить имитацию");
+      MKApp* pMKApp=(MKApp*)qApp;
 
-      connect(pactOnImit, SIGNAL(triggered()), this, SLOT(OnImit()));
-     pmnuMode->addAction(pactOnImit);
-
-     MKApp* pMKApp=(MKApp*)qApp;
-     if (pMKApp->GetImitType()==1)
-     {
-         QAction* pactOnImitServer = new QAction("Start Imit server", 0);
-         pactOnImitServer->setText("&Имитация (сервер) ..."); //
-         pactOnImitServer->setToolTip("Запустить имитацию");
-         pactOnImitServer->setStatusTip("Запустить имитацию");
-         pactOnImitServer->setWhatsThis("Запустить имитацию");
-         pmnuMode->addAction(pactOnImitServer);
-
-
-     }
-     if (pMKApp->GetImitType()==2)
+     if (pMKApp->IsClientNet())
      {
          QAction* pactOnImitClient = new QAction("Start Imit client", 0);
          pactOnImitClient->setText("&Имитация (клиент) ..."); //
@@ -170,7 +150,18 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
 
 
      }
+     else {
+         QAction* pactOnImit = new QAction("Start Imit", 0);
+          pactOnImit->setText("&Имитация  ..."); //
+          pactOnImit->setShortcut(QKeySequence("CTRL+I"));
+          pactOnImit->setToolTip("Запустить имитацию");
+          pactOnImit->setStatusTip("Запустить имитацию");
+          pactOnImit->setWhatsThis("Запустить имитацию");
 
+          connect(pactOnImit, SIGNAL(triggered()), this, SLOT(OnImit()));
+         pmnuMode->addAction(pactOnImit);
+
+     }
 
 
     QMenu* pmnuHelp = new QMenu(tr("&Помощь"));
@@ -204,7 +195,7 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
     setWindowTitle(TITLE_NO_NAME);
 
     connect(&imit_tread, SIGNAL(MkTimeEvent()),this, SLOT(SlotMoveShow()));
-    m_pTcpSocket = new QTcpSocket(this);
+//    m_pTcpSocket = new QTcpSocket(this);
 
 }
 
@@ -381,7 +372,12 @@ void MainwindowTrace::OnImit()
           pMKApp->scon.status=0;  // нет полетов
           return;  // нет трасс
       }
-      pMKApp->scon.status=1; // запуск полетов
+
+      if (plg.GetStateNetServer())
+          pMKApp->scon.status=2;  // полеты и сервер
+      else
+          pMKApp->scon.status=1; // запуск полетов
+
       pView->beg_tick = GetTickCount();  //GetTickCount64();
       pView->trace_time=0;  // время движения при имитации
       pdoc->SetStartTime();  // установка задержек, для обработки точек рубежа
@@ -403,7 +399,7 @@ void MainwindowTrace::SlotMoveShow()
 {
     MKApp* pMKApp=(MKApp*)qApp;
 
-    if (pMKApp->scon.status!=1)
+    if (pMKApp->scon.status==0)
           return;
 
     New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());

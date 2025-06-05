@@ -4,6 +4,7 @@
 #include <QStandardItem>
 #include <QTimer>
 #include <QTime>
+#include "mknetserver.h"
 
 class RightForm;
 //class IKO;
@@ -44,6 +45,7 @@ private:
    int		m_ntr_val;  // номер трассы, выбранной в комбо
    DocTras* m_pDocument;
    QStandardItemModel* modelTrPoints; // модель точек трассы
+   MKNetServer* m_pmkServer;
 };
 
 #endif // NEW_TRACEVIEW_H

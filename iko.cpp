@@ -61,7 +61,7 @@ void IKO::paintEvent(QPaintEvent* pe)
 
    tr.Draw(painter,sz_pix,pMKApp->scon.dist);
 
-   if (pMKApp->scon.status==1)  // включен режим имитации
+   if (pMKApp->scon.status!=0)  // включен режим имитации
    {
 
        TargetPositionNet tpn;
@@ -125,7 +125,7 @@ void IKO::mousePressEvent(QMouseEvent *event)
    }
   }
 
- }
+ } //  left mouse pressing end
  if (event->button() == Qt::RightButton) {
    slotShowContextMenu(event->pos());
  }
@@ -178,41 +178,9 @@ void IKO::mouseMoveEvent(QMouseEvent *event)
   this->update();
  }
  BaseIko::mouseMoveEvent(event);
-//    QPoint p1=event->pos();
-
-//    float distance_km,bearing_gr;
-
-//    GetDB(p1,distance_km,bearing_gr);
-
-//    QString str;
-//    QString str_b="D:%1";
-//    str=str_b.arg(QString::number(distance_km,'g',5));
-
-//    str=str+QString(QObject::tr(" км"));
-//    emit signalDistance(str);
-
-//    str_b="B: %1";
-//    str=str_b.arg(QString::number(bearing_gr,'g',5));
-//    str=str+QString(QObject::tr(" град."));
-//    emit signalBearing(str);
-
-//    float xx,yy;
-//    DkmBToXY(distance_km, bearing_gr,xx, yy);
-
-//    str_b="X: %1";
-//    str=str_b.arg(QString::number(xx,'g',5));
-//    str=str+QString(QObject::tr(" км"));
-//    emit sigXkm(str);
-
-
-//    str_b="Y: %1";
-//    str=str_b.arg(QString::number(yy,'g',5));
-//    str=str+QString(QObject::tr(" км"));
-//    emit sigYkm(str);
-
-
-//    event->accept();
 }
+//*********************************************************
+// вызывается при нажатии правой кнопки мыши
 void IKO::slotShowContextMenu(const QPoint& pos)
 {
  New_traceView* pView = dynamic_cast<New_traceView*> (pMW->centralWidget());
@@ -330,14 +298,3 @@ int IKO::heightForWidth(int w)
 {
     return w;
 }
-//void IKO::ShowTarget(QPainter& painter,TargetPositionNet tpn)
-//{
-//  MKApp* pMKApp=(MKApp*)qApp;
-
-//  int x = tpn.fx_km*width()/(pMKApp->scon.dist*2)+(float)width()/2;
-//  int y = - tpn.fy_km*height()/(pMKApp->scon.dist*2) + (float)height()/2;
-
-//  painter.drawRect(x-3,y-3,6,6);
-
-
-//}

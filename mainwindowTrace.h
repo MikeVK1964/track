@@ -38,7 +38,7 @@ private:
 ////    QTimer *tmr; //Адресная переменная таймера
     MkImitThread imit_tread;
 /////    QTcpServer* m_ptcpServer;
-    QTcpSocket* m_pTcpSocket;
+//    QTcpSocket* m_pTcpSocket;
 };
 
 #endif // MAINWINDOW_H

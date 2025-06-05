@@ -18,7 +18,7 @@ bool MKApp::LoadSettings()
         QSettings m_settings( QDir::currentPath()+"/"+fname, QSettings::IniFormat );
 
 
-         type_imit = m_settings.value("Imit/type_app").toUInt();
+         mknet_client = m_settings.value("Imit/mknet_client").toUInt();
          SleepingTime=m_settings.value("Imit/SleepingTime").toUInt();
 ///         qDebug() << type_imit  << SleepingTime;
 

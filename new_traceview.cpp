@@ -61,6 +61,7 @@ New_traceView::New_traceView(QWidget* parent)
 
  m_ntr_val=0; // нет выбранных трасс
  modelTrPoints = new QStandardItemModel; // модель точек трассы
+ m_pmkServer = new MKNetServer(2323,m_pDocument,parent);
 
 }
 

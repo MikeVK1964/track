@@ -10,11 +10,11 @@ public:
     MKApp(int &argc, char **argv);
     bool LoadSettings();
     SetControl scon; // управляющие параметры
-    unsigned GetImitType() {return type_imit; }
+    bool IsClientNet() {return mknet_client==1 ; }
     unsigned GetSleepingTime(){return SleepingTime;}
 private:
     QString fname="trace.conf";
-    unsigned type_imit; //1 - timer
+    unsigned mknet_client=0; //1 -  клиент сети
     unsigned SleepingTime=0;
 };
 
