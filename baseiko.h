@@ -16,7 +16,7 @@ protected:
   void GetDB(QPoint mp, float &distance_km, float &b);
   void ShowTarget(QPainter& painter,TargetPositionNet tpn);
   void mouseMoveEvent(QMouseEvent *event);
-
+  void BaseConstruct();
 signals:
     void signalBearing(QString strb);
     void signalDistance(QString d);

@@ -201,7 +201,6 @@ MainwindowTrace::MainwindowTrace(QWidget *parent)
 
 MainwindowTrace::~MainwindowTrace()
 {
-    
 }
 void MainwindowTrace::slotAbout()
 {

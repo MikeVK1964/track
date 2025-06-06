@@ -100,18 +100,14 @@ void DocTras::Save(QString fname)
     {
      char head_f[]="SAL02";
      f.write(head_f,5); // сохранили заголовок
-   //  New_traceView* pView = dynamic_cast<New_traceView*> (centralWidget());
-   //  DocTras* pdoc= pView->GetDocument();
      // открываем поток для записи
      QDataStream stream(&f);
      stream.setVersion(QDataStream::Qt_5_10);
-/////     SetStartTime();    --- реализовать позже
 
      stream << m_Trackes.count(); // число  трасс
 
      for (qsizetype i=0;i<m_Trackes.count();i++)
              stream << m_Trackes[i];
-  //    m_Trackes[i].Serialize(ar);
 
 
      f.flush();
