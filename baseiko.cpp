@@ -4,6 +4,8 @@
 #include "mkapp.h"
 #include "convcoor.h"
 #include "maketras.h"
+#include "mainwindowTrace.h"
+#include "new_traceview.h"
 
 BaseIko::BaseIko(QWidget *parent): QLabel(parent)
 {
@@ -26,6 +28,27 @@ void BaseIko::paintEvent(QPaintEvent*)
      // ось Х
 
      painter.drawLine(QPointF(0,height()/2),QPointF(width(),height()/2));
+
+     extern MainwindowTrace* pMW;
+
+     New_traceView* pView = dynamic_cast<New_traceView*> (pMW->centralWidget());
+
+     ThreadsController* pThreadsController= pView->GetpThreadContr();
+     if (pThreadsController!=nullptr)
+     {
+
+    //  QVector<TargetPositionNet>::iterator it= vnettar1.begin();
+      QVector<TargetPositionNet>::iterator it= pThreadsController->vnettar1.begin();
+
+      for (; it!= pThreadsController->vnettar1.end();++it)
+      {
+        ShowTarget(painter,*it);
+
+      }
+      qDebug() << "paintEvent" << pThreadsController->vnettar1.count() ;
+
+     }
+
     painter.end();
 
 }
@@ -74,7 +97,6 @@ void BaseIko::ShowTarget(QPainter& painter,TargetPositionNet tpn)
 
   painter.drawRect(x-3,y-3,6,6);
 
-
 }
 void BaseIko::mouseMoveEvent(QMouseEvent *event)
 {
@@ -112,5 +134,23 @@ void BaseIko::mouseMoveEvent(QMouseEvent *event)
 
 
     event->accept();
+
+}
+void BaseIko::SlotShowTargets()
+{
+//    QPainter painter;
+//    painter.begin(this);
+//     QVector<TargetPositionNet>::iterator it= vnettar.begin();
+
+//     for (; it!= vnettar.end();++it)
+//     {
+//        ShowTarget(painter,*it);
+
+//     }
+//    painter.end();
+//   vnettar1=vnettar;
+   qDebug() << "BaseIko::SlotShowTargets"  ;
+
+   update();
 
 }

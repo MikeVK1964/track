@@ -15,38 +15,6 @@ BaseView::BaseView(QWidget* parent)
       m_ntr_val=0; // нет выбранных трасс
       modelTrPoints = new QStandardItemModel; // модель точек трассы
 
-//    QSplitter* pleft;
-//    pright1 = new RightForm;
-
-//    pleft = new QSplitter(Qt::Vertical);
-
-//    pIKO=new IKO;
-//   //// pleft->addWidget(new IKO);
-//    pleft->addWidget(pIKO);
-//    psi_xh = new SI_XH;
-
-//    pleft->addWidget(psi_xh);
-
-//    addWidget(pleft);
-
-//    addWidget(pright1);
-
-
-
-//    connect(pIKO,SIGNAL(signalDistance(QString)),pright1->ui->label_Distance,
-//            SLOT(setText(QString)));
-//    connect(pIKO,SIGNAL(signalBearing(QString)),pright1->ui->labelB,
-//                        SLOT(setText(QString)));
-
-//    connect(pIKO,SIGNAL(sigXkm(QString)),pright1->ui->label_Xkm,
-//                        SLOT(setText(QString)));
-
-//    connect(pIKO,SIGNAL(sigYkm(QString)),pright1->ui->label_Ykm,
-//                        SLOT(setText(QString)));
-
-
-//    connect(psi_xh,SIGNAL(signalH(QString)),pright1->ui->label_H,
-//                        SLOT(setText(QString)));
 
 
 }

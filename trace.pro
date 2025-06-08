@@ -17,7 +17,9 @@ SOURCES += main.cpp\
     baseview.cpp \
     dlgimit.cpp \
     doctras.cpp \
+    ikoclient.cpp \
     mkapp.cpp \
+    mkclientsocket.cpp \
     mkimitthread.cpp \
     mknetserver.cpp \
     new_traceview.cpp \
@@ -28,14 +30,17 @@ SOURCES += main.cpp\
     statmem.cpp \
     setcontrol.cpp \
     si_xh.cpp \
-    maketras.cpp
+    maketras.cpp \
+    threadscontroller.cpp
 
 HEADERS  += \
     DocTrace.h \
     baseiko.h \
     baseview.h \
     dlgimit.h \
+    ikoclient.h \
     mkapp.h \
+    mkclientsocket.h \
     mkimitthread.h \
     mknetserver.h \
     new_traceview.h \
@@ -46,7 +51,8 @@ HEADERS  += \
     setcontrol.h \
     convcoor.h \
     si_xh.h \
-    maketras.h
+    maketras.h \
+    threadscontroller.h
 
 FORMS += \
     dlgimit.ui \

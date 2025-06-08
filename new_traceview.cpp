@@ -10,6 +10,8 @@
 #include "convcoor.h"
 #include "DocTrace.h"
 #include "setcontrol.h"
+#include "mkapp.h"
+#include "ikoclient.h"
 
 //************************************************************
 // Главный winget MainwindowTrace
@@ -19,13 +21,31 @@
 New_traceView::New_traceView(QWidget* parent)
     :BaseView(parent)
 {
-
- pIKO=new IKO;
+ MKApp* pMKApp=(MKApp*)qApp;
+ if (pMKApp->IsClientNet())
+ {
+     pIKO=new ikoclient; //(BaseIko;
+ }
+ else {
+     pIKO=new IKO;
+ }
  psi_xh = new SI_XH;
 
  BaseView::BaseConstruct();
+ if (pMKApp->IsClientNet())
+ {
+     pThreadsController = new ThreadsController();
+//     connect(pThreadsController, SIGNAL(ShowTracks(QVector<TargetPositionNet> )),
+//                    (ikoclient *)  pIKO, SLOT(SlotShowTargets(QVector<TargetPositionNet> )) );
+     connect(pThreadsController, SIGNAL(SignalShowNetTracks1()),
+                     pIKO, SLOT(SlotShowTargets()) );
 
- m_pmkServer = new MKNetServer(2323,m_pDocument,parent);
+     //SlotShowTargets(
+
+ }
+ else {
+     m_pmkServer = new MKNetServer(2323,m_pDocument,parent);
+ }
 
 }
 

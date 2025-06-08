@@ -2,6 +2,8 @@
 #include <QSettings>
 #include <qfile.h>
 #include <QDir>
+#include <QMessageBox>
+
 #include "mkapp.h"
 
 MKApp::MKApp(int &argc, char **argv)
@@ -23,8 +25,10 @@ bool MKApp::LoadSettings()
 ///         qDebug() << type_imit  << SleepingTime;
 
     }
-    else       return false;
-
+    else {
+        QMessageBox::information(nullptr,"There isn't file ",fname);
+        return false;
+    }
 
     return true;
 }

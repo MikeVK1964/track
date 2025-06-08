@@ -6,6 +6,7 @@
 #include <QTime>
 #include "mknetserver.h"
 #include "baseview.h"
+#include "threadscontroller.h"
 
 class RightForm;
 //class IKO;
@@ -21,8 +22,12 @@ class New_traceView : public BaseView
 public:
  New_traceView(QWidget* pwgt=0);
  ~New_traceView();
+ ThreadsController* GetpThreadContr() {return pThreadsController;}
+
 private:
    MKNetServer* m_pmkServer;
+   ThreadsController* pThreadsController;
+
 };
 
 #endif // NEW_TRACEVIEW_H

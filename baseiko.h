@@ -3,7 +3,9 @@
 
 #include <QLabel>
 #include <QObject>
-class TargetPositionNet;
+#include "maketras.h"
+
+//class TargetPositionNet;
 
 class BaseIko : public QLabel
 {
@@ -22,7 +24,10 @@ signals:
     void signalDistance(QString d);
     void sigXkm(QString sxkm);
     void sigYkm(QString sykm);
-
+public slots:
+    void SlotShowTargets();
+//private:
+//   QVector<TargetPositionNet> vnettar1;
 };
 
 #endif // BASEIKO_H
